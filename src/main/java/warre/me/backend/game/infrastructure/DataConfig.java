@@ -29,6 +29,9 @@ public class DataConfig {
                 new PlayerId(UUID.fromString("a8befecd-694e-4748-b00c-a80fbf7b909e")),
                 0
         );
+
+        currentPlayer.addToPlace(1);
+        currentPlayer.buyProperty();
         Map<PlayerId, GamePlayer> playerMap = Stream.of(
                         currentPlayer)
                 .collect(Collectors.toMap(GamePlayer::getPlayerId, Function.identity()));

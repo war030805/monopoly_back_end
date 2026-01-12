@@ -29,6 +29,7 @@ public class Game {
         this.gameId = gameId;
         this.players = players;
         this.currentPlayer = currentPlayer;
+        dices=Dices.trowDices();
     }
 
 

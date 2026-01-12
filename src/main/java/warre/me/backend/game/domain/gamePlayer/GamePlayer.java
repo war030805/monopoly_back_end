@@ -23,7 +23,7 @@ public class GamePlayer {
     private final PlayerId playerId;
 
     @Getter
-    private int money;
+    private int money= 1500;
 
     @Getter
     private int place;
