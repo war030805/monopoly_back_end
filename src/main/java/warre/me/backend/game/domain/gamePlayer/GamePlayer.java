@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static warre.me.backend.game.domain.gamePlayer.Action.STARTING;
+import static warre.me.backend.game.domain.gamePlayer.Action.WAITING;
 
 
 public class GamePlayer implements Comparable<GamePlayer> {
@@ -46,7 +46,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         this.movePlace = movePlace;
         ownsProperties =new HashMap<>();
         isBankrupt=false;
-        action=STARTING;
+        action=WAITING;
         this.color=color;
     }
 

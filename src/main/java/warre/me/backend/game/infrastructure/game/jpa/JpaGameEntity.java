@@ -7,6 +7,7 @@ import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.game.domain.gamePlayer.PlayerId;
 import warre.me.backend.game.infrastructure.gamePlayer.jpa.JpaGamePlayerEntity;
+import warre.me.backend.lobby.domain.lobby.LobbyId;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,8 @@ public class JpaGameEntity {
     @Id
     private UUID id;
 
+    private UUID lobbyFromGame;
+
     @MapsId("gameId") // gebruikt gameId uit embedded id
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "game_id")
@@ -32,16 +35,18 @@ public class JpaGameEntity {
     protected JpaGameEntity() {
     } // for JPA
 
-    public JpaGameEntity(UUID id, List<JpaGamePlayerEntity> players, UUID currentPlayer) {
+    public JpaGameEntity(UUID id, UUID lobbyFromGame, List<JpaGamePlayerEntity> players, UUID currentPlayer) {
         this.id = id;
         this.players = players;
         this.currentPlayer = currentPlayer;
+        this.lobbyFromGame= lobbyFromGame;
     }
 
 
     public static JpaGameEntity fromDomain(Game game) {
         return new JpaGameEntity(
                 game.getGameId().id(),
+                game.getLobbyFromGame().id(),
                 game.getPlayers().stream()
                         .map(gamePlayer -> JpaGamePlayerEntity.fromDomain(gamePlayer, game.getGameId()))
                         .toList(),
@@ -53,6 +58,7 @@ public class JpaGameEntity {
     public Game toDomain() {
         return new Game(
                 new GameId(id),
+                new LobbyId(lobbyFromGame),
                 players.stream()
                         .map(JpaGamePlayerEntity::toDomain)
                         .collect(Collectors.toMap(GamePlayer::getPlayerId, Function.identity())),

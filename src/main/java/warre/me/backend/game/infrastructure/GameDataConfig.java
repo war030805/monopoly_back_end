@@ -9,6 +9,7 @@ import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.game.GameRepository;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.game.domain.gamePlayer.PlayerId;
+import warre.me.backend.lobby.domain.lobby.LobbyId;
 
 import java.util.Map;
 import java.util.UUID;
@@ -16,15 +17,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Transactional
 @Configuration
-public class DataConfig {
+public class GameDataConfig {
     private final GameRepository gameRepository;
 
-    public DataConfig(GameRepository gameRepository) {
+    public GameDataConfig(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
 
-    @Transactional
+
     @EventListener(ApplicationReadyEvent.class)
     public void onStartup() {
         var currentPlayer = new GamePlayer(
@@ -52,6 +54,7 @@ public class DataConfig {
 
         var game = new Game(
                 new GameId(UUID.fromString("969ae20c-7641-4e3a-bfc8-ab3a16ff5b84")),
+                LobbyId.random(),
                 playerMap,
                 currentPlayer.getPlayerId()
         );

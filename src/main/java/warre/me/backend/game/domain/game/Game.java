@@ -5,6 +5,8 @@ import warre.me.backend.chared.domain.NotFoundException;
 import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.game.domain.gamePlayer.PlayerId;
+import warre.me.backend.lobby.domain.lobby.Lobby;
+import warre.me.backend.lobby.domain.lobby.LobbyId;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,10 @@ import static warre.me.backend.chared.domain.board.Board.getPropertyFromPlace;
 public class Game {
     @Getter
     private final GameId gameId;
+
+    @Getter
+    private final LobbyId lobbyFromGame;
+
     private final Map<PlayerId, GamePlayer> players;
 
     @Getter
@@ -25,8 +31,9 @@ public class Game {
     private Dices dices;
 
 
-    public Game(GameId gameId, Map<PlayerId, GamePlayer> players, PlayerId currentPlayer) {
+    public Game(GameId gameId, LobbyId lobbyFromGame, Map<PlayerId, GamePlayer> players, PlayerId currentPlayer) {
         this.gameId = gameId;
+        this.lobbyFromGame = lobbyFromGame;
         this.players = players;
         this.currentPlayer = currentPlayer;
         dices=Dices.trowDices();
