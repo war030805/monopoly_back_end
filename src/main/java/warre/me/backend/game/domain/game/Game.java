@@ -2,6 +2,7 @@ package warre.me.backend.game.domain.game;
 
 import lombok.Getter;
 import warre.me.backend.chared.domain.NotFoundException;
+import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.game.domain.gamePlayer.PlayerId;
 
@@ -20,6 +21,9 @@ public class Game {
     @Getter
     private PlayerId currentPlayer;
 
+    @Getter
+    private Dices dices;
+
 
     public Game(GameId gameId, Map<PlayerId, GamePlayer> players, PlayerId currentPlayer) {
         this.gameId = gameId;
@@ -29,8 +33,8 @@ public class Game {
 
 
     public void trowDicesByPlayer(PlayerId playerId) {
-        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
-        player.trowDices();
+        getCurrentPlayerAndCheckIsPlayer(playerId);
+        dices=Dices.trowDices();
     }
 
     private GamePlayer getCurrentPlayerAndCheckIsPlayer(PlayerId playerId) {
@@ -82,7 +86,7 @@ public class Game {
 
         var owner= whoOwnsProperty(player);
 
-        player.payLandOnOtherProperty(owner);
+        player.payLandOnOtherProperty(owner, dices);
 
     }
 
@@ -101,6 +105,6 @@ public class Game {
     public void move(PlayerId playerId) {
         var player= getCurrentPlayerAndCheckIsPlayer(playerId);
 
-        player.move();
+        player.move(dices);
     }
 }

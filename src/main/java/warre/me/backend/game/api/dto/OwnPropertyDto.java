@@ -2,6 +2,7 @@ package warre.me.backend.game.api.dto;
 
 import warre.me.backend.chared.domain.board.Board;
 import warre.me.backend.chared.domain.board.property.Property;
+import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.game.domain.property.OwnProperty;
 
@@ -13,13 +14,13 @@ public record OwnPropertyDto(
         int price
 ) {
 
-    public static OwnPropertyDto fromDomain(OwnProperty ownProperty, GamePlayer gamePlayer) {
+    public static OwnPropertyDto fromDomain(OwnProperty ownProperty, GamePlayer gamePlayer, Dices dices) {
         return new OwnPropertyDto(
                 ownProperty.getProperty(),
                 ownProperty.getHouses(),
                 Board.getPlaceOfProperty(ownProperty.getProperty()),
                 ownProperty.needsToTrowDice(),
-                ownProperty.calcLandPrice(gamePlayer.getDices(), gamePlayer.calcOwsOnOwnPropertyIfNeeded(ownProperty.getProperty()))
+                ownProperty.calcLandPrice(dices, gamePlayer.calcOwsOnOwnPropertyIfNeeded(ownProperty.getProperty()))
         );
     }
 }

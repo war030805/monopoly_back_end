@@ -33,9 +33,6 @@ public class GamePlayer {
     private final int movePlace;
 
     @Getter
-    private Dices dices;
-
-    @Getter
     private boolean isBankrupt;
 
     @Getter
@@ -47,11 +44,6 @@ public class GamePlayer {
         ownsProperties =new HashMap<>();
         isBankrupt=false;
         action=STARTING;
-    }
-
-    public Dices trowDices() {
-        dices= Dices.trowDices();
-        return dices;
     }
 
     public void addToPlace(int places) {
@@ -82,11 +74,11 @@ public class GamePlayer {
         return ownsProperties.containsKey(property);
     }
 
-    public void payLandOnOtherProperty(GamePlayer owner) {
+    public void payLandOnOtherProperty(GamePlayer owner, Dices dices) {
         bankruptCheck();
         var property=Board.buyProperty(place);
 
-        var moneyToPay= owner.getMoneyFromPlayerForProperty(property, this);
+        var moneyToPay= owner.getMoneyFromPlayerForProperty(property, dices);
 
         if (moneyToPay>=money) {
             throw new MoneyException("cannot buy dos not have enough money");
@@ -95,7 +87,7 @@ public class GamePlayer {
         money-=moneyToPay;
     }
 
-    private int getMoneyFromPlayerForProperty(Property property, GamePlayer lander) {
+    private int getMoneyFromPlayerForProperty(Property property, Dices dices) {
         bankruptCheck();
 
         if (!ownsProperty(property)) {
@@ -107,7 +99,7 @@ public class GamePlayer {
 
         var owsOfCards= calcOwsOnOwnPropertyIfNeeded(property);
 
-        int price=ownProperty.calcLandPrice(lander.getDices(), owsOfCards);
+        int price=ownProperty.calcLandPrice(dices, owsOfCards);
 
         money+=price;
 
@@ -138,7 +130,7 @@ public class GamePlayer {
         }
     }
 
-    public void move() {
+    public void move(Dices dices) {
         bankruptCheck();
         addToPlace(dices.sum());
     }

@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public record PlayerDataDto(
         UUID id,
-        Dices dices,
         int money,
         int place,
         List<OwnPropertyDto> ownsCards,
@@ -17,14 +16,13 @@ public record PlayerDataDto(
         boolean isBankrupt,
         Action action
 ) {
-    public static PlayerDataDto fromDomain(GamePlayer gamePlayer) {
+    public static PlayerDataDto fromDomain(GamePlayer gamePlayer, Dices dices) {
         return new PlayerDataDto(
                 gamePlayer.getPlayerId().id(),
-                gamePlayer.getDices(),
                 gamePlayer.getMoney(),
                 gamePlayer.getPlace(),
                 gamePlayer.getListOfOwnProperty().stream()
-                        .map((ownProperty -> OwnPropertyDto.fromDomain(ownProperty, gamePlayer)))
+                        .map((ownProperty -> OwnPropertyDto.fromDomain(ownProperty, gamePlayer, dices)))
                         .toList(),
                 gamePlayer.getMovePlace(),
                 gamePlayer.isBankrupt(),

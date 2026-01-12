@@ -13,6 +13,10 @@ public record GameId(UUID id) implements NotFoundThrower {
         Assert.notNull(id, "Id cannot be null");
     }
 
+    public static GameId random() {
+        return new GameId(UUID.randomUUID());
+    }
+
     @Override
     public String notFoundMessage() {
         return NotFoundException.createNotFoundMessageFromNameAndId("game", id);
