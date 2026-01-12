@@ -14,7 +14,8 @@ public record PlayerDataDto(
         List<OwnPropertyDto> ownsCards,
         int movePlace,
         boolean isBankrupt,
-        Action action
+        Action action,
+        String color
 ) {
     public static PlayerDataDto fromDomain(GamePlayer gamePlayer, Dices dices) {
         return new PlayerDataDto(
@@ -26,7 +27,8 @@ public record PlayerDataDto(
                         .toList(),
                 gamePlayer.getMovePlace(),
                 gamePlayer.isBankrupt(),
-                gamePlayer.getAction()
+                gamePlayer.getAction(),
+                gamePlayer.getColor()
         );
     }
 }

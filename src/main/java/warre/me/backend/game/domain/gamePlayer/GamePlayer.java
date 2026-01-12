@@ -18,7 +18,7 @@ import java.util.Optional;
 import static warre.me.backend.game.domain.gamePlayer.Action.STARTING;
 
 
-public class GamePlayer {
+public class GamePlayer implements Comparable<GamePlayer> {
     @Getter
     private final PlayerId playerId;
 
@@ -38,12 +38,27 @@ public class GamePlayer {
     @Getter
     private Action action;
 
-    public GamePlayer(PlayerId playerId, int movePlace) {
+    @Getter
+    private final String color;
+
+    public GamePlayer(PlayerId playerId, int movePlace, String color) {
         this.playerId = playerId;
         this.movePlace = movePlace;
         ownsProperties =new HashMap<>();
         isBankrupt=false;
         action=STARTING;
+        this.color=color;
+    }
+
+    public GamePlayer(PlayerId playerId, Map<Property, OwnProperty> ownsProperties, int movePlace, int money, int place, boolean isBankrupt, Action action, String color) {
+        this.playerId = playerId;
+        this.ownsProperties = ownsProperties;
+        this.movePlace = movePlace;
+        this.money = money;
+        this.place = place;
+        this.isBankrupt = isBankrupt;
+        this.action = action;
+        this.color=color;
     }
 
     public void addToPlace(int places) {
@@ -138,5 +153,10 @@ public class GamePlayer {
     public OwnProperty getOwnPropertyByProperty(Property property) {
         return Optional.ofNullable(ownsProperties.get(property))
                 .orElseThrow(property::notFound);
+    }
+
+    @Override
+    public int compareTo(GamePlayer o) {
+        return Integer.compare(movePlace, o.movePlace);
     }
 }

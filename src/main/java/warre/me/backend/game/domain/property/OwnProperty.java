@@ -12,12 +12,20 @@ import static warre.me.backend.chared.domain.board.property.StreetType.UTILITY;
 
 @Getter
 public class OwnProperty {
+    private final OwnPropertyId ownPropertyId;
     private final Property property;
     private int houses; //als het de station is of de utility dan is dit altijd 0
 
     public OwnProperty(Property property) {
+        this.ownPropertyId = OwnPropertyId.random();
         this.property = property;
         houses=0;
+    }
+
+    public OwnProperty(OwnPropertyId ownPropertyId, Property property, int houses) {
+        this.ownPropertyId = ownPropertyId;
+        this.property = property;
+        this.houses = houses;
     }
 
     public int calcLandPrice(Dices dices, int owns) {

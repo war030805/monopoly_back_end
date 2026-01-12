@@ -18,6 +18,10 @@ public record PlayerId(UUID id) implements NotFoundThrower {
         return new PlayerId(UUID.fromString(token.getSubject()));
     }
 
+    public static PlayerId random() {
+        return new PlayerId(UUID.randomUUID());
+    }
+
     @Override
     public String notFoundMessage() {
         return NotFoundException.createNotFoundMessageFromNameAndId("player", id);

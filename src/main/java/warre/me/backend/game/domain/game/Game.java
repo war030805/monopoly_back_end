@@ -58,6 +58,7 @@ public class Game {
     public List<GamePlayer> getPlayers() {
         return players.values()
                 .stream()
+                .sorted()
                 .toList();
     }
 
