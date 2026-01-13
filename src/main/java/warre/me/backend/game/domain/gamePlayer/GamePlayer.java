@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static warre.me.backend.game.domain.gamePlayer.Action.TROWING_DICES;
 import static warre.me.backend.game.domain.gamePlayer.Action.WAITING;
 
 
@@ -162,6 +163,10 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void throwDices() {
-        action= Action.TROWING_DICES;
+        action= TROWING_DICES;
+    }
+
+    public void endMove() {
+        action= WAITING;
     }
 }

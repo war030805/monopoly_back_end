@@ -45,7 +45,7 @@ public class GameController {
 
     @PostMapping("/buyProperty/{gameId}")
     public ResponseEntity<Void> buyProperty(
-            UUID gameId,
+            @PathVariable UUID gameId,
             @AuthenticationPrincipal Jwt token
     ) {
         PlayerId playerId= PlayerId.fromToken(token);

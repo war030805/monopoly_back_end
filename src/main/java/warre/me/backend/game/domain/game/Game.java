@@ -125,12 +125,13 @@ public class Game {
                 .toList();
 
         //als die niet bestaat dan betekent dat die de laatste is dus we zetten het terug op de eerste
-        this.currentPlayer=playersSorted.stream()
+        var newCurrentPlayer=playersSorted.stream()
                 .filter(player -> player.getMovePlace() > currentPlayer.getMovePlace())
                 .sorted()
                 .findFirst()
-                .orElse(playersSorted.get(0)).getPlayerId();
+                .orElse(playersSorted.get(0));
 
-
+        currentPlayer.endMove();
+        this.currentPlayer=newCurrentPlayer.getPlayerId();
     }
 }

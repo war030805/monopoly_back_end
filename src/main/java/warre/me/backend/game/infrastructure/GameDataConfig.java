@@ -37,18 +37,19 @@ public class GameDataConfig {
 
 
 
-        var player2= makePLayerWithStep("purple", 1,3);
-        var player3= makePLayerWithStep("green", 2,3);
-        var player4= makePLayerWithStep("yellow", 3,3);
-        var player5= makePLayerWithStep("white", 4,3);
-        var player6= makePLayerWithStep("black", 5,3);
+//        var player2= makePLayerWithStep("purple", 1,0);
+//        var player3= makePLayerWithStep("green", 2,0);
+//        var player4= makePLayerWithStep("yellow", 3,0);
+//        var player5= makePLayerWithStep("white", 4,0);
+//        var player6= makePLayerWithStep("black", 5,0);
 
 
 
-        currentPlayer.addToPlace(3);
+        currentPlayer.addToPlace(0);
 
         Map<PlayerId, GamePlayer> playerMap = Stream.of(
-                        currentPlayer,player2, player3, player4, player5, player6
+                        currentPlayer
+//                        ,player2, player3, player4, player5, player6
                         )
                 .collect(Collectors.toMap(GamePlayer::getPlayerId, Function.identity()));
 

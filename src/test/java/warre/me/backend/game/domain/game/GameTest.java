@@ -3,6 +3,7 @@ package warre.me.backend.game.domain.game;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import warre.me.backend.game.domain.gamePlayer.Action;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
 import warre.me.backend.player.domain.PlayerId;
@@ -55,6 +56,7 @@ class GameTest {
 
             // Assert
             assertEquals(player2.getPlayerId(), game.getCurrentPlayer());
+            assertEquals(Action.WAITING, player1.getAction());
         }
 
 
@@ -73,6 +75,7 @@ class GameTest {
 
             // Assert
             assertEquals(player1.getPlayerId(), game.getCurrentPlayer());
+            assertEquals(Action.WAITING, player4.getAction());
         }
     }
 }
