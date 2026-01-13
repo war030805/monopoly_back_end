@@ -4,8 +4,8 @@ import lombok.Getter;
 import warre.me.backend.chared.domain.NotFoundException;
 import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
-import warre.me.backend.player.domain.PlayerId;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
+import warre.me.backend.player.domain.PlayerId;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,8 @@ public class Game {
 
 
     public void trowDicesByPlayer(PlayerId playerId) {
-        getCurrentPlayerAndCheckIsPlayer(playerId);
+        var player=getCurrentPlayerAndCheckIsPlayer(playerId);
+        player.throwDices();
         dices=Dices.trowDices();
     }
 
@@ -114,5 +115,22 @@ public class Game {
         var player= getCurrentPlayerAndCheckIsPlayer(playerId);
 
         player.move(dices);
+    }
+
+    public void endMove(PlayerId playerId) {
+        var currentPlayer= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        var playersSorted= getPlayers().stream()
+                .sorted()
+                .toList();
+
+        //als die niet bestaat dan betekent dat die de laatste is dus we zetten het terug op de eerste
+        this.currentPlayer=playersSorted.stream()
+                .filter(player -> player.getMovePlace() > currentPlayer.getMovePlace())
+                .sorted()
+                .findFirst()
+                .orElse(playersSorted.get(0)).getPlayerId();
+
+
     }
 }

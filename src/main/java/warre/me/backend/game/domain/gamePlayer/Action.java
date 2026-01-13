@@ -4,7 +4,5 @@ public enum Action {
     /**
      * als je aan het wachten bent op een andere speler
      */
-    WAITING,
-    BUYING_PROPERTY,
-
+    WAITING,TROWING_DICES
 }

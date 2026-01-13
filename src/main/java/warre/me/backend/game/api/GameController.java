@@ -63,6 +63,16 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/endMove/{gameId}")
+    public ResponseEntity<Void> endMove(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.endMove(new GameId(gameId), playerId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{gameId}")
     public ResponseEntity<GameDataDto> getGameData(
             @PathVariable UUID gameId,

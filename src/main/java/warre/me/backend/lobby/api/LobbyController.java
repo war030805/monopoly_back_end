@@ -8,6 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/lobby")
 public class LobbyController {
 
-    @GetMapping
-
 }

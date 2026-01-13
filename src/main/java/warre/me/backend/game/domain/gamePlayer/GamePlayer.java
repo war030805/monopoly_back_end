@@ -160,4 +160,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
     public int compareTo(GamePlayer o) {
         return Integer.compare(movePlace, o.movePlace);
     }
+
+    public void throwDices() {
+        action= Action.TROWING_DICES;
+    }
 }

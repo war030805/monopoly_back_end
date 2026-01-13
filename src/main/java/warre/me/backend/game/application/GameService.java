@@ -62,6 +62,18 @@ public class GameService {
                 .orElseThrow(gameId::notFound);
 
         game.move(playerId);
+
+        gameRepository.save(game);
+        return game;
+    }
+
+    public Game endMove(GameId gameId, PlayerId playerId) {
+        var game= gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.endMove(playerId);
+
+        gameRepository.save(game);
         return game;
     }
 }

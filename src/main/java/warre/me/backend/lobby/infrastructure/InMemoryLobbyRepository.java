@@ -21,7 +21,7 @@ public class InMemoryLobbyRepository implements LobbyRepository {
 
     @Override
     public void save(Lobby lobby) {
-        store.put(lobby.lobbyId(), lobby);
+        store.put(lobby.getLobbyId(), lobby);
     }
 
     @Override
