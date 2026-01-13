@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.application.GameService;
 import warre.me.backend.game.domain.game.GameId;
-import warre.me.backend.game.domain.gamePlayer.PlayerId;
+import warre.me.backend.player.domain.PlayerId;
 
 import java.util.UUID;
 

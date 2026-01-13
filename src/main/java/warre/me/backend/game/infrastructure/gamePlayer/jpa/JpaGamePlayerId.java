@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import warre.me.backend.game.domain.game.GameId;
-import warre.me.backend.game.domain.gamePlayer.PlayerId;
+import warre.me.backend.player.domain.PlayerId;
 
 import java.io.Serializable;
 import java.util.UUID;

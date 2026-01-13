@@ -70,6 +70,10 @@ public abstract class Board {
         return getPropertyFromPlace(place);
     }
 
+    public static TileType getTileTypeFromPlace(int place) {
+        return BOARD_TILES[place].getTileType();
+    }
+
     public static int getPlaceOfProperty(Property property) {
         return propertyPlaceMap.computeIfAbsent(property, Board::computeIfAbsent);
     }

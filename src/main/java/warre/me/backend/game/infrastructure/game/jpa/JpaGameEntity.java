@@ -1,11 +1,10 @@
 package warre.me.backend.game.infrastructure.game.jpa;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Profile;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
-import warre.me.backend.game.domain.gamePlayer.PlayerId;
+import warre.me.backend.player.domain.PlayerId;
 import warre.me.backend.game.infrastructure.gamePlayer.jpa.JpaGamePlayerEntity;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
 
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
 @Table(name = "games")

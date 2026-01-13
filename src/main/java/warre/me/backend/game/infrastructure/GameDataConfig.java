@@ -8,7 +8,7 @@ import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.game.GameRepository;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
-import warre.me.backend.game.domain.gamePlayer.PlayerId;
+import warre.me.backend.player.domain.PlayerId;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
 
 import java.util.Map;

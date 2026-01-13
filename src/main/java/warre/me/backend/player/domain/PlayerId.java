@@ -1,4 +1,4 @@
-package warre.me.backend.game.domain.gamePlayer;
+package warre.me.backend.player.domain;
 
 import org.jmolecules.ddd.annotation.ValueObject;
 import org.springframework.security.oauth2.jwt.Jwt;

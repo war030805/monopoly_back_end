@@ -9,6 +9,7 @@ import warre.me.backend.game.domain.game.BuyException;
 import warre.me.backend.game.domain.game.GameException;
 import warre.me.backend.game.domain.game.MoneyException;
 import warre.me.backend.game.domain.property.OwnProperty;
+import warre.me.backend.player.domain.PlayerId;
 
 import java.util.HashMap;
 import java.util.List;

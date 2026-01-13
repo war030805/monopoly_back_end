@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
-import warre.me.backend.lobby.domain.LobbyPlayer;
 import warre.me.backend.lobby.domain.lobby.LobbyRepository;
 
 @Transactional

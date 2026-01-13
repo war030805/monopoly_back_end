@@ -4,8 +4,7 @@ import lombok.Getter;
 import warre.me.backend.chared.domain.NotFoundException;
 import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
-import warre.me.backend.game.domain.gamePlayer.PlayerId;
-import warre.me.backend.lobby.domain.lobby.Lobby;
+import warre.me.backend.player.domain.PlayerId;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
 
 import java.util.List;
