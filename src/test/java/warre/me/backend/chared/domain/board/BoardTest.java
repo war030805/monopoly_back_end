@@ -1,10 +1,13 @@
 package warre.me.backend.chared.domain.board;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import warre.me.backend.chared.domain.board.property.StreetType;
 import warre.me.backend.chared.domain.board.tile.Tile;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static warre.me.backend.chared.domain.board.Board.TILES_SIZE;
 import static warre.me.backend.chared.domain.board.Board.getFullBoard;
 
@@ -54,5 +57,44 @@ class BoardTest {
 
         Arrays.stream(frontEndTiles)
                 .forEach(array -> System.out.println(Arrays.toString(array)));
+    }
+
+    @Nested
+    class NearestStreetTypePlace {
+        @Test
+        public void shouldReturn5WhenPlaceIs0() {
+            // Arrange
+            int startPlace=0;
+
+            // Act
+            var place= Board.getNearestStreetTypePlace(startPlace, StreetType.STATION);
+
+            // Assert
+            assertEquals(5,place);
+        }
+
+        @Test
+        public void shouldReturn35WhenPlaceIs39() {
+            // Arrange
+            int startPlace=39;
+
+            // Act
+            var place= Board.getNearestStreetTypePlace(startPlace, StreetType.STATION);
+
+            // Assert
+            assertEquals(35,place);
+        }
+
+        @Test
+        public void shouldReturn35WhenPlaceIs30() {
+            // Arrange
+            int startPlace=30;
+
+            // Act
+            var place= Board.getNearestStreetTypePlace(startPlace, StreetType.STATION);
+
+            // Assert
+            assertEquals(35,place);
+        }
     }
 }

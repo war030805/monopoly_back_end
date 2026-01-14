@@ -1,25 +1,24 @@
 package warre.me.backend.chared.domain.board;
 
+import org.springframework.data.util.Pair;
 import warre.me.backend.chared.domain.NotFoundException;
 import warre.me.backend.chared.domain.board.property.Property;
+import warre.me.backend.chared.domain.board.property.StreetType;
 import warre.me.backend.chared.domain.board.tile.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static warre.me.backend.chared.domain.board.property.Property.*;
 
 public abstract class Board {
-    private final static Tile[] BOARD_TILES=makeBoardTiles();
+    private final static Tile[] BOARD_TILES = makeBoardTiles();
 
-    public final static int TILES_SIZE= BOARD_TILES.length;
+    public final static int TILES_SIZE = BOARD_TILES.length;
 
-    private final static HashMap<Property, Integer> propertyPlaceMap= new HashMap<>();
+    private final static HashMap<Property, Integer> propertyPlaceMap = new HashMap<>();
 
     private static Tile[] makeBoardTiles() {
-        return new Tile[] {
+        return new Tile[]{
                 new GoTile(),
                 new PropertyTile(OLD_KENT_ROAD),
                 CommunityChestTile.getInstance(),
@@ -80,7 +79,7 @@ public abstract class Board {
 
     private static int computeIfAbsent(Property property) {
         for (int i = 0; i < BOARD_TILES.length; i++) {
-            var tile=BOARD_TILES[i];
+            var tile = BOARD_TILES[i];
             if (tile.getTileType().equals(TileType.PROPERTY) && tile.getProperty().equals(property)) {
                 return i;
             }
@@ -98,12 +97,83 @@ public abstract class Board {
 
     public static List<Tile> getFullBoardStartingAtPlace(int place) {
 
-        var placeFromEnd= TILES_SIZE - place;
-        var start= new ArrayList<>(getFullBoard().subList(placeFromEnd,TILES_SIZE));
+        var placeFromEnd = TILES_SIZE - place;
+        var start = new ArrayList<>(getFullBoard().subList(placeFromEnd, TILES_SIZE));
 
         var end = getFullBoard().subList(0, placeFromEnd);
 
         start.addAll(end);
         return start.stream().toList();
+    }
+
+    public static int getTaxFromPlace(int place) {
+        return BOARD_TILES[place].getTax();
+    }
+
+    private static List<Tile> getAllPropertyTiles() {
+        return getFullBoard().stream()
+                .filter(Tile::isProperty)
+                .toList();
+    }
+
+    public static int getNearestStreetTypePlace(int place, StreetType streetType) {
+        var tileTypeOfCurrentPlace = getTileTypeFromPlace(place);
+
+        if (tileTypeOfCurrentPlace.equals(TileType.PROPERTY)) {
+            var property = getPropertyFromPlace(place);
+            if (property.getStreetType().equals(streetType)) {
+                return place;
+            }
+        }
+
+
+        var beforeTiles = new ArrayList<>(getFullBoard().subList(0, place));
+        Collections.reverse(beforeTiles);
+
+        var afterTiles = getFullBoard().subList(place + 1, TILES_SIZE);
+
+        var distanceAndPlacePairBefore=getDistanceToTileAndPlace(beforeTiles, streetType);
+        var distanceAndPlacePairAfter=getDistanceToTileAndPlace(afterTiles, streetType);
+
+        var distanceToBeforeTile = distanceAndPlacePairBefore.getFirst();
+
+        var distanceToAfterTile = distanceAndPlacePairAfter.getFirst();
+
+        var placeTileOfBefore = distanceAndPlacePairBefore.getSecond();
+
+        var placeTileOfAfter = distanceAndPlacePairAfter.getSecond();
+
+
+        if (distanceToBeforeTile < distanceToAfterTile) {
+            return placeTileOfBefore;
+        }
+
+        return placeTileOfAfter;
+    }
+
+    private static Optional<Tile> getFirstOfPropertyOfList(List<Tile> tiles, StreetType streetType) {
+        return tiles.stream()
+                .filter(Tile::isProperty)
+                .filter(tile -> tile.getProperty().getStreetType().equals(streetType))
+                .findFirst();
+    }
+
+    /**
+     *
+     * @param tiles de tiles list
+     * @return als eerste is het de distance en dan is de place
+     */
+    private static Pair<Integer, Integer> getDistanceToTileAndPlace(List<Tile> tiles, StreetType streetType) {
+        var optionalTile=getFirstOfPropertyOfList(tiles, streetType);
+
+        var distanceToTile = optionalTile
+                .map(tiles::indexOf)
+                .orElse(Integer.MAX_VALUE);
+
+        var placeOfTile= optionalTile
+                .map(tile -> getPlaceOfProperty(tile.getProperty()))
+                .orElse(Integer.MAX_VALUE);
+
+        return Pair.of(distanceToTile, placeOfTile);
     }
 }

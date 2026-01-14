@@ -29,7 +29,6 @@ public class Game {
     @Getter
     private Dices dices;
 
-
     public Game(GameId gameId, LobbyId lobbyFromGame, Map<PlayerId, GamePlayer> players, PlayerId currentPlayer) {
         this.gameId = gameId;
         this.lobbyFromGame = lobbyFromGame;
@@ -120,9 +119,7 @@ public class Game {
     public void endMove(PlayerId playerId) {
         var currentPlayer= getCurrentPlayerAndCheckIsPlayer(playerId);
 
-        var playersSorted= getPlayers().stream()
-                .sorted()
-                .toList();
+        var playersSorted= getPlayersSorted();
 
         //als die niet bestaat dan betekent dat die de laatste is dus we zetten het terug op de eerste
         var newCurrentPlayer=playersSorted.stream()
@@ -133,5 +130,17 @@ public class Game {
 
         currentPlayer.endMove();
         this.currentPlayer=newCurrentPlayer.getPlayerId();
+    }
+
+    private List<GamePlayer> getPlayersSorted() {
+        return getPlayers().stream()
+                .sorted()
+                .toList();
+    }
+
+    public void payTax(PlayerId playerId) {
+        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        player.payTax();
     }
 }

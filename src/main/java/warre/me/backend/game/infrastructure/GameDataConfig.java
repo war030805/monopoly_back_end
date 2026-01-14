@@ -35,6 +35,12 @@ public class GameDataConfig {
                 "red"
         );
 
+        var player2 = new GamePlayer(
+                new PlayerId(UUID.fromString("a8207180-13fa-410e-8def-8583f394e5bf")),
+                1,
+                "purple"
+        );
+
 
 
 //        var player2= makePLayerWithStep("purple", 1,0);
@@ -49,7 +55,7 @@ public class GameDataConfig {
 
         Map<PlayerId, GamePlayer> playerMap = Stream.of(
                         currentPlayer
-//                        ,player2, player3, player4, player5, player6
+                        ,player2
                         )
                 .collect(Collectors.toMap(GamePlayer::getPlayerId, Function.identity()));
 

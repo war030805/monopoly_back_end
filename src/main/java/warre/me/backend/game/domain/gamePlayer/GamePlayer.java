@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static warre.me.backend.game.domain.gamePlayer.Action.TROWING_DICES;
-import static warre.me.backend.game.domain.gamePlayer.Action.WAITING;
+import static warre.me.backend.game.domain.gamePlayer.Action.*;
 
 
 public class GamePlayer implements Comparable<GamePlayer> {
@@ -68,6 +67,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         if (newPlace >= Board.TILES_SIZE) {
             newPlace= newPlace - Board.TILES_SIZE;
+            money+=200;
         }
         place= newPlace;
     }
@@ -81,6 +81,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
         }
 
         money-=property.getPropertyBuyCost();
+
+        action=BUY_PROPERTY;
 
         ownsProperties.put(property, new OwnProperty(
                 property
@@ -150,6 +152,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     public void move(Dices dices) {
         bankruptCheck();
         addToPlace(dices.sum());
+        action=MOVED;
     }
 
     public OwnProperty getOwnPropertyByProperty(Property property) {
@@ -163,10 +166,43 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void throwDices() {
+        bankruptCheck();
         action= TROWING_DICES;
     }
 
     public void endMove() {
+        bankruptCheck();
         action= WAITING;
+    }
+
+    public void payTax() {
+        bankruptCheck();
+        var tax=Board.getTaxFromPlace(place);
+        if (tax> money) {
+            throw new MoneyException("you do not have enough money to pay taxes");
+        }
+        action=PAYING_TAXES;
+    }
+
+    public void goToPlace(int placeToMove) {
+        bankruptCheck();
+        var placesToMove= calcDistanceToPlace(placeToMove);
+        addToPlace(placesToMove);
+    }
+
+    private int calcDistanceToPlace(int place) {
+        var places= place- this.place;
+
+        if (places<0) {
+            //positief maken
+            places= Math.abs(places);
+            places= Board.TILES_SIZE - places;
+        }
+
+        return places;
+    }
+
+    public void payMoney(int money) {
+        this.money-=money;
     }
 }

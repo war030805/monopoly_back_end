@@ -76,4 +76,13 @@ public class GameService {
         gameRepository.save(game);
         return game;
     }
+
+    public void payTax(GameId gameId, PlayerId playerId) {
+        var game= gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.payTax(playerId);
+
+        gameRepository.save(game);
+    }
 }

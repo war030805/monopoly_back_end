@@ -73,6 +73,16 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/payTax/{gameId}")
+    public ResponseEntity<Void> payTax(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.payTax(new GameId(gameId), playerId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{gameId}")
     public ResponseEntity<GameDataDto> getGameData(
             @PathVariable UUID gameId,
