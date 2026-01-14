@@ -41,10 +41,9 @@ public class GamePlayer implements Comparable<GamePlayer> {
     private final String color;
 
     @Getter
-    private final List<Card> chanceCardsOwned;
+    private final List<Card> ownedCards;
 
-    @Getter
-    private final List<Card> communityChestCardsOwned;
+
 
     public GamePlayer(PlayerId playerId, int movePlace, String color) {
         this.playerId = playerId;

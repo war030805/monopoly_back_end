@@ -1,4 +1,4 @@
-package warre.me.backend.chared.domain.cards;
+package warre.me.backend.chared.domain.cards.cardTypes;
 
 public enum CardType {
     ADVANCE_TO_GO_COLLECT_200,

@@ -1,9 +1,8 @@
 package warre.me.backend.game.infrastructure.gamePlayer.jpa;
 
 import jakarta.persistence.*;
-import lombok.Getter;
 import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.CardType;
+import warre.me.backend.chared.domain.cards.cardTypes.CardType;
 import warre.me.backend.chared.domain.cards.chance.ChanceCards;
 import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
 import warre.me.backend.game.domain.game.GameId;

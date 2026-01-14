@@ -2,7 +2,7 @@ package warre.me.backend.game.infrastructure.game.jpa;
 
 import jakarta.persistence.*;
 import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.CardType;
+import warre.me.backend.chared.domain.cards.cardTypes.CardType;
 import warre.me.backend.chared.domain.cards.chance.ChanceCards;
 import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
 import warre.me.backend.chared.domain.dice.Dices;

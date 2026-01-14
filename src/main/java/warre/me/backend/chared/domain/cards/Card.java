@@ -1,6 +1,7 @@
 package warre.me.backend.chared.domain.cards;
 
 import lombok.Getter;
+import warre.me.backend.chared.domain.cards.cardTypes.CardType;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 
@@ -8,13 +9,15 @@ import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 public abstract class Card {
     private final String name;
     private final CardType cardType;
+    private final DeckType deckType;
 
-    protected Card(String name, CardType cardType) {
+    protected Card(String name, CardType cardType, DeckType deckType) {
         this.name = name;
         this.cardType = cardType;
+        this.deckType = deckType;
     }
 
-    abstract void doThingUseCard(Game game, GamePlayer gamePlayer);
+    public abstract void doThingUseCard(Game game, GamePlayer gamePlayer);
 
 
 }
