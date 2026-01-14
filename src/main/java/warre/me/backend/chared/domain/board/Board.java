@@ -7,6 +7,7 @@ import warre.me.backend.chared.domain.board.property.StreetType;
 import warre.me.backend.chared.domain.board.tile.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static warre.me.backend.chared.domain.board.property.Property.*;
 
@@ -15,7 +16,7 @@ public abstract class Board {
 
     public final static int TILES_SIZE = BOARD_TILES.length;
 
-    private final static HashMap<Property, Integer> propertyPlaceMap = new HashMap<>();
+    private final static Map<Property, Integer> propertyPlaceMap = new ConcurrentHashMap<>();
 
     private static Tile[] makeBoardTiles() {
         return new Tile[]{

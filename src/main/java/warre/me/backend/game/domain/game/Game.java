@@ -64,6 +64,7 @@ public class Game {
     public List<GamePlayer> getPlayers() {
         return players.values()
                 .stream()
+                .filter(gamePlayer -> !gamePlayer.isBankrupt())
                 .sorted()
                 .toList();
     }
@@ -142,5 +143,13 @@ public class Game {
         var player= getCurrentPlayerAndCheckIsPlayer(playerId);
 
         player.payTax();
+    }
+
+    public void payEachPlayer(GamePlayer payer, int money) {
+        getPlayers().stream()
+                .filter(gamePlayer -> !gamePlayer.equals(payer))
+                .forEach(gamePlayer -> gamePlayer.giveMoney(money));
+
+        payer.payMoney(money * getPlayers().size()-1);
     }
 }

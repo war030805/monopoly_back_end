@@ -87,4 +87,8 @@ public enum Property implements NotFoundThrower {
             default -> Arrays.stream(rents).boxed().toList();
         };
     }
+
+    public boolean isNormalProperty() {
+        return !streetType.equals(StreetType.UTILITY) && !streetType.equals(StreetType.STATION);
+    }
 }

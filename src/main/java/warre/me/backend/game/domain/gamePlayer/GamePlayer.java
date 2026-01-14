@@ -191,18 +191,37 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     private int calcDistanceToPlace(int place) {
-        var places= place- this.place;
-
-        if (places<0) {
-            //positief maken
-            places= Math.abs(places);
-            places= Board.TILES_SIZE - places;
-        }
-
-        return places;
+        return 0;
     }
 
     public void payMoney(int money) {
         this.money-=money;
+    }
+
+    public void giveMoney(int money) {
+        this.money+=money;
+    }
+
+    public void goOutOfJail() {
+
+    }
+
+    public void goToPrison() {
+    }
+
+    public int getCountOfHouses() {
+        return getListOfOwnProperty().stream()
+                .filter(ownProperty -> ownProperty.getProperty().isNormalProperty())
+                .filter(ownProperty -> ownProperty.getHouses()<5)
+                .mapToInt(OwnProperty::getHouses)
+                .sum();
+    }
+
+    public int getCountOfHotels() {
+        return getListOfOwnProperty().stream()
+                .filter(ownProperty -> ownProperty.getProperty().isNormalProperty())
+                .filter(ownProperty -> ownProperty.getHouses()==5)
+                .toList()
+                .size();
     }
 }
