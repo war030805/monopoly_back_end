@@ -4,6 +4,7 @@ import lombok.Getter;
 import warre.me.backend.chared.domain.board.Board;
 import warre.me.backend.chared.domain.board.property.Property;
 import warre.me.backend.chared.domain.board.property.StreetType;
+import warre.me.backend.chared.domain.cards.Card;
 import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.game.BuyException;
 import warre.me.backend.game.domain.game.GameException;
@@ -11,10 +12,7 @@ import warre.me.backend.game.domain.game.MoneyException;
 import warre.me.backend.game.domain.property.OwnProperty;
 import warre.me.backend.player.domain.PlayerId;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static warre.me.backend.game.domain.gamePlayer.Action.*;
 
@@ -42,6 +40,12 @@ public class GamePlayer implements Comparable<GamePlayer> {
     @Getter
     private final String color;
 
+    @Getter
+    private final List<Card> chanceCardsOwned;
+
+    @Getter
+    private final List<Card> communityChestCardsOwned;
+
     public GamePlayer(PlayerId playerId, int movePlace, String color) {
         this.playerId = playerId;
         this.movePlace = movePlace;
@@ -49,9 +53,13 @@ public class GamePlayer implements Comparable<GamePlayer> {
         isBankrupt=false;
         action=WAITING;
         this.color=color;
+        chanceCardsOwned=new ArrayList<>();
+        communityChestCardsOwned=new ArrayList<>();
     }
 
-    public GamePlayer(PlayerId playerId, Map<Property, OwnProperty> ownsProperties, int movePlace, int money, int place, boolean isBankrupt, Action action, String color) {
+    public GamePlayer(PlayerId playerId, Map<Property, OwnProperty> ownsProperties, int movePlace, int money, int place,
+                      boolean isBankrupt, Action action, String color, List<Card> chanceCardsOwned,
+                      List<Card> communityChestCardsOwned) {
         this.playerId = playerId;
         this.ownsProperties = ownsProperties;
         this.movePlace = movePlace;
@@ -60,6 +68,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
         this.isBankrupt = isBankrupt;
         this.action = action;
         this.color=color;
+        this.chanceCardsOwned = chanceCardsOwned;
+        this.communityChestCardsOwned = communityChestCardsOwned;
     }
 
     public void addToPlace(int places) {
@@ -67,7 +77,12 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         if (newPlace >= Board.TILES_SIZE) {
             newPlace= newPlace - Board.TILES_SIZE;
-            money+=200;
+            giveMoney(200);
+        }
+
+        if (newPlace < 0) {
+            newPlace= Math.abs(newPlace);
+            newPlace= Board.TILES_SIZE - newPlace;
         }
         place= newPlace;
     }
@@ -80,7 +95,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
             throw new BuyException("does not have enough money to buy property");
         }
 
-        money-=property.getPropertyBuyCost();
+        payMoney(property.getPropertyBuyCost());
 
         action=BUY_PROPERTY;
 
@@ -103,7 +118,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
             throw new MoneyException("cannot buy dos not have enough money");
         }
 
-        money-=moneyToPay;
+        payMoney(moneyToPay);
     }
 
     private int getMoneyFromPlayerForProperty(Property property, Dices dices) {
@@ -120,7 +135,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         int price=ownProperty.calcLandPrice(dices, owsOfCards);
 
-        money+=price;
+        giveMoney(price);
 
         return price;
     }
@@ -182,6 +197,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
             throw new MoneyException("you do not have enough money to pay taxes");
         }
         action=PAYING_TAXES;
+        payMoney(tax);
     }
 
     public void goToPlace(int placeToMove) {
@@ -191,10 +207,21 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     private int calcDistanceToPlace(int place) {
-        return 0;
+        var places= place- this.place;
+
+        if (places<0) {
+            //positief maken
+            places= Math.abs(places);
+            places= Board.TILES_SIZE - places;
+        }
+
+        return places;
     }
 
     public void payMoney(int money) {
+        if (this.money> money) {
+            throw new MoneyException();
+        }
         this.money-=money;
     }
 

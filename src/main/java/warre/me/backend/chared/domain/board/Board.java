@@ -5,6 +5,7 @@ import warre.me.backend.chared.domain.NotFoundException;
 import warre.me.backend.chared.domain.board.property.Property;
 import warre.me.backend.chared.domain.board.property.StreetType;
 import warre.me.backend.chared.domain.board.tile.*;
+import warre.me.backend.game.domain.game.Game;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -176,5 +177,9 @@ public abstract class Board {
                 .orElse(Integer.MAX_VALUE);
 
         return Pair.of(distanceToTile, placeOfTile);
+    }
+
+    public static void doActionOnTile(int newPlace, Game game) {
+
     }
 }

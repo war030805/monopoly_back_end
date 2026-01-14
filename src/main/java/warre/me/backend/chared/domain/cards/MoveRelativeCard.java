@@ -3,15 +3,15 @@ package warre.me.backend.chared.domain.cards;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 
-public class PayEachPlayerCard extends Card {
-    private final int money;
-    public PayEachPlayerCard(String name, CardType cardType, int money) {
+public class MoveRelativeCard extends Card {
+    private final int places;
+    public MoveRelativeCard(String name, CardType cardType, int places) {
         super(name, cardType);
-        this.money = money;
+        this.places=places;
     }
 
     @Override
     void doThingUseCard(Game game, GamePlayer gamePlayer) {
-        game.payEachPlayer(gamePlayer, money);
+        gamePlayer.addToPlace(places);
     }
 }

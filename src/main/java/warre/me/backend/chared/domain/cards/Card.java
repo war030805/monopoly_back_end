@@ -3,7 +3,6 @@ package warre.me.backend.chared.domain.cards;
 import lombok.Getter;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
-import warre.me.backend.player.domain.PlayerId;
 
 @Getter
 public abstract class Card {

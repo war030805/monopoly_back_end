@@ -2,11 +2,15 @@ package warre.me.backend.game.domain.game;
 
 import lombok.Getter;
 import warre.me.backend.chared.domain.NotFoundException;
+import warre.me.backend.chared.domain.cards.Card;
+import warre.me.backend.chared.domain.cards.chance.ChanceCards;
+import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
 import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
 import warre.me.backend.player.domain.PlayerId;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +28,12 @@ public class Game {
     private final Map<PlayerId, GamePlayer> players;
 
     @Getter
+    private final LinkedList<Card> chanceCards;
+
+    @Getter
+    private final LinkedList<Card> communityChestCards;
+
+    @Getter
     private PlayerId currentPlayer;
 
     @Getter
@@ -35,8 +45,20 @@ public class Game {
         this.players = players;
         this.currentPlayer = currentPlayer;
         dices=Dices.trowDices();
+        chanceCards= new LinkedList<>(ChanceCards.makeDeck());
+        communityChestCards= new LinkedList<>(CommunityChestCards.makeDeck());
     }
 
+    public Game(GameId gameId, LobbyId lobbyFromGame, Map<PlayerId, GamePlayer> players, List<Card> chanceCards,
+                List<Card> communityChestCards, PlayerId currentPlayer, Dices dices) {
+        this.gameId = gameId;
+        this.lobbyFromGame = lobbyFromGame;
+        this.players = players;
+        this.chanceCards = new LinkedList<>(chanceCards);
+        this.communityChestCards = new LinkedList<>(communityChestCards);
+        this.currentPlayer = currentPlayer;
+        this.dices = dices;
+    }
 
     public void trowDicesByPlayer(PlayerId playerId) {
         var player=getCurrentPlayerAndCheckIsPlayer(playerId);
@@ -64,8 +86,14 @@ public class Game {
     public List<GamePlayer> getPlayers() {
         return players.values()
                 .stream()
-                .filter(gamePlayer -> !gamePlayer.isBankrupt())
                 .sorted()
+                .toList();
+    }
+
+    public List<GamePlayer> getPlayersNotBankrupt() {
+        return getPlayers()
+                .stream()
+                .filter(gamePlayer -> !gamePlayer.isBankrupt())
                 .toList();
     }
 
@@ -100,12 +128,12 @@ public class Game {
     }
 
     private boolean ownsProperty(GamePlayer player) {
-        return getPlayers().stream()
+        return getPlayersNotBankrupt().stream()
                 .anyMatch(otherPlayer -> otherPlayer.ownsProperty(getPropertyFromPlace(player.getPlace())));
     }
 
     private GamePlayer whoOwnsProperty(GamePlayer gamePlayer) {
-        return getPlayers().stream()
+        return getPlayersNotBankrupt().stream()
                 .filter(player -> player.ownsProperty(getPropertyFromPlace(gamePlayer.getPlace())))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("nobody owns property"));
@@ -120,7 +148,7 @@ public class Game {
     public void endMove(PlayerId playerId) {
         var currentPlayer= getCurrentPlayerAndCheckIsPlayer(playerId);
 
-        var playersSorted= getPlayersSorted();
+        var playersSorted= getPlayersNotBankrupt();
 
         //als die niet bestaat dan betekent dat die de laatste is dus we zetten het terug op de eerste
         var newCurrentPlayer=playersSorted.stream()
@@ -133,12 +161,6 @@ public class Game {
         this.currentPlayer=newCurrentPlayer.getPlayerId();
     }
 
-    private List<GamePlayer> getPlayersSorted() {
-        return getPlayers().stream()
-                .sorted()
-                .toList();
-    }
-
     public void payTax(PlayerId playerId) {
         var player= getCurrentPlayerAndCheckIsPlayer(playerId);
 
@@ -146,10 +168,10 @@ public class Game {
     }
 
     public void payEachPlayer(GamePlayer payer, int money) {
-        getPlayers().stream()
+        getPlayersNotBankrupt().stream()
                 .filter(gamePlayer -> !gamePlayer.equals(payer))
                 .forEach(gamePlayer -> gamePlayer.giveMoney(money));
 
-        payer.payMoney(money * getPlayers().size()-1);
+        payer.payMoney(money * getPlayersNotBankrupt().size()-1);
     }
 }

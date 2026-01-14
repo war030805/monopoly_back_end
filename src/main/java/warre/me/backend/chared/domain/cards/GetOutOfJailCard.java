@@ -5,7 +5,7 @@ import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 
 public class GetOutOfJailCard extends Card {
 
-    protected GetOutOfJailCard(String name) {
+    public GetOutOfJailCard(String name) {
         super(name, CardType.GET_OUT_OF_JAIL_FREE);
     }
 

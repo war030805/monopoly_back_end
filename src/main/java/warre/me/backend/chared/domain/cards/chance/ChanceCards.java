@@ -1,29 +1,83 @@
 package warre.me.backend.chared.domain.cards.chance;
 
-import warre.me.backend.chared.domain.board.property.Property;
 import warre.me.backend.chared.domain.board.property.StreetType;
-import warre.me.backend.chared.domain.cards.AdvanceToNearestStreetTypeCard;
-import warre.me.backend.chared.domain.cards.AdvanceToPropertyCard;
-import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.GoToPlaceCard;
+import warre.me.backend.chared.domain.cards.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static warre.me.backend.chared.domain.board.property.Property.PALL_MALL;
-import static warre.me.backend.chared.domain.board.property.Property.TRAFALGAR_SQUARE;
+import static warre.me.backend.chared.domain.board.property.Property.*;
 import static warre.me.backend.chared.domain.cards.CardType.*;
 
 public abstract class ChanceCards {
-    private final static List<Card> cards= makeCards();
+    private final static Map<CardType, Card> cards = makeCards();
 
 
-    private static List<Card> makeCards() {
-        return List.of(
-                new GoToPlaceCard("Advance to \"Go\". (Collect $200)", ADVANCE_TO_GO_COLLECT_200, 0, false),
-                new AdvanceToPropertyCard(ADVANCE_TO_ILLINOIS_AVENUE, TRAFALGAR_SQUARE),
-                new AdvanceToPropertyCard(ADVANCE_TO_ST_CHARLES_PLACE, PALL_MALL),
-                new AdvanceToNearestStreetTypeCard("Advance token to the nearest Utility.", ADVANCE_TO_NEAREST_UTILITY, StreetType.UTILITY),
-                new AdvanceToNearestStreetTypeCard("Advance token to the nearest Railroad.", ADVANCE_TO_NEAREST_RAILROAD, StreetType.UTILITY)
-        );
+    private static Map<CardType, Card> makeCards() {
+        return Stream.of(
+                        new GoToPlaceCard("Advance to \"Go\". (Collect $200)", ADVANCE_TO_GO_COLLECT_200, 0, false),
+                        new AdvanceToPropertyCard(ADVANCE_TO_ILLINOIS_AVENUE, TRAFALGAR_SQUARE),
+                        new AdvanceToPropertyCard(ADVANCE_TO_ST_CHARLES_PLACE, PALL_MALL),
+                        new AdvanceToNearestStreetTypeCard("Advance token to the nearest Utility.", ADVANCE_TO_NEAREST_UTILITY, StreetType.UTILITY),
+                        makeRailRoadCard(),
+
+                        // 6) Dividend +50
+                        new MoneyTransactionCard("Bank pays you dividend of $50.", BANK_PAYS_DIVIDEND_50, 50, false),
+
+                        // 7) Get out of jail free
+                        new GetOutOfJailCard("Get out of Jail Free."),
+
+                        // 8) Go back 3 spaces
+                        new MoveRelativeCard("Go Back Three Spaces.", GO_BACK_THREE_SPACES, -3),
+
+                        // 9) Go to Jail
+                        new GoToPlaceCard("Go to Jail. Go directly to Jail. Do not pass GO, do not collect $200.", GO_TO_JAIL, -1, true),
+
+                        // 10) General repairs
+                        new PaysPerHouseAndHotelCard(
+                                "Make general repairs on all your property: For each house pay $25, For each hotel $100.",
+                                GENERAL_REPAIRS_PAY_PER_HOUSE_25_PER_HOTEL_100,
+                                25,
+                                100
+                        ),
+
+                        // 11) Trip to Reading Railroad (in UK: King’s Cross)
+                        new AdvanceToPropertyCard(TRIP_TO_READING_RAILROAD, KINGS_CROSS_STATION),
+
+                        // 12) Boardwalk (in UK: Mayfair)
+                        new AdvanceToPropertyCard(ADVANCE_TO_BOARDWALK, MAYFAIR),
+
+                        // 13) Chairman: pay each player 50
+                        new PayEachPlayerCard("You have been elected Chairman of the Board. Pay each player $50.",
+                                ELECTED_CHAIRMAN_PAY_EACH_PLAYER_50, 50),
+
+                        // 14) Building & loan matures +150
+                        new MoneyTransactionCard("Your building and loan matures. Collect $150.",
+                                BUILDING_AND_LOAN_MATURES_COLLECT_150, 150, false)
+                )
+                .collect(Collectors.toMap(Card::getCardType, Function.identity()));
+    }
+
+    private static Card makeRailRoadCard() {
+        return new AdvanceToNearestStreetTypeCard("Advance token to the nearest Railroad.", ADVANCE_TO_NEAREST_RAILROAD, StreetType.STATION);
+    }
+
+    public static List<Card> makeDeck() {
+        var deck = new ArrayList<>(cards.values());
+
+        deck.add(makeRailRoadCard());
+
+        Collections.shuffle(deck);
+
+        return deck;
+    }
+
+    public static Card getCard(CardType cardType) {
+        return cards.get(cardType);
     }
 }
