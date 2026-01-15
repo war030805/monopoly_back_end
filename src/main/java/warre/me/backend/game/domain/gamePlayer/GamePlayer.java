@@ -4,7 +4,9 @@ import lombok.Getter;
 import warre.me.backend.chared.domain.board.Board;
 import warre.me.backend.chared.domain.board.property.Property;
 import warre.me.backend.chared.domain.board.property.StreetType;
+import warre.me.backend.chared.domain.board.tile.TileType;
 import warre.me.backend.chared.domain.cards.Card;
+import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.game.BuyException;
 import warre.me.backend.game.domain.game.GameException;
@@ -43,7 +45,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
     @Getter
     private final List<Card> ownedCards;
 
-
+    @Getter
+    private Card cardGot;
 
     public GamePlayer(PlayerId playerId, int movePlace, String color) {
         this.playerId = playerId;
@@ -52,13 +55,11 @@ public class GamePlayer implements Comparable<GamePlayer> {
         isBankrupt=false;
         action=WAITING;
         this.color=color;
-        chanceCardsOwned=new ArrayList<>();
-        communityChestCardsOwned=new ArrayList<>();
+        ownedCards=new ArrayList<>();
     }
 
     public GamePlayer(PlayerId playerId, Map<Property, OwnProperty> ownsProperties, int movePlace, int money, int place,
-                      boolean isBankrupt, Action action, String color, List<Card> chanceCardsOwned,
-                      List<Card> communityChestCardsOwned) {
+                      boolean isBankrupt, Action action, String color) {
         this.playerId = playerId;
         this.ownsProperties = ownsProperties;
         this.movePlace = movePlace;
@@ -67,8 +68,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         this.isBankrupt = isBankrupt;
         this.action = action;
         this.color=color;
-        this.chanceCardsOwned = chanceCardsOwned;
-        this.communityChestCardsOwned = communityChestCardsOwned;
+        ownedCards=new ArrayList<>();
     }
 
     public void addToPlace(int places) {
@@ -249,5 +249,55 @@ public class GamePlayer implements Comparable<GamePlayer> {
                 .filter(ownProperty -> ownProperty.getHouses()==5)
                 .toList()
                 .size();
+    }
+
+    public void pullCard(Card card) {
+        if (this.cardGot!=null) {
+            throw new GameException("you cannot add a cord if you got already one card");
+        }
+
+        this.cardGot=card;
+    }
+
+    public TileType getTileTypeStandingOn() {
+        return Board.getTileTypeFromPlace(place);
+    }
+
+    public Optional<Card> getCardGotOptional() {
+        return Optional.ofNullable(cardGot);
+    }
+
+    public void saveCard() {
+        if (cardGot==null) {
+            throw new GameException("cannot save card if you got none");
+        }
+
+        if (!cardGot.canSave()) {
+            throw new GameException("cannot save card");
+        }
+
+        ownedCards.add(cardGot);
+
+        cardGot=null;
+    }
+
+    public Card useCard() {
+        if (cardGot==null) {
+            throw new GameException("cannot use card if you got none");
+        }
+        var cardTed= cardGot;
+        cardGot=null;
+        return cardTed;
+    }
+
+    public Card useSavedCard(CardSpecificType cardSpecificType) {
+        var cardToUse=ownedCards.stream()
+                .filter(card -> card.getCardSpecificType().equals(cardSpecificType))
+                .findAny()
+                .orElseThrow(cardSpecificType::notFound);
+
+        ownedCards.remove(cardToUse);
+
+        return cardToUse;
     }
 }

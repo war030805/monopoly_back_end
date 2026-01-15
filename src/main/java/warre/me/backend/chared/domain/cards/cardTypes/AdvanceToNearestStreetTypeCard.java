@@ -9,8 +9,8 @@ import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 
 public class AdvanceToNearestStreetTypeCard extends Card {
     private final StreetType streetType;
-    public AdvanceToNearestStreetTypeCard(String name, CardType cardType, StreetType streetType, DeckType deckType) {
-        super(name, cardType, deckType);
+    public AdvanceToNearestStreetTypeCard(String name, CardSpecificType cardSpecificType, StreetType streetType, DeckType deckType) {
+        super(name, cardSpecificType, deckType);
         this.streetType= streetType;
     }
 
@@ -18,5 +18,10 @@ public class AdvanceToNearestStreetTypeCard extends Card {
     public void doThingUseCard(Game game, GamePlayer gamePlayer) {
         var placeToMove= Board.getNearestStreetTypePlace(gamePlayer.getPlace(), streetType);
         gamePlayer.goToPlace(placeToMove);
+    }
+
+    @Override
+    public CardType getCardType() {
+        return CardType.MOVER;
     }
 }

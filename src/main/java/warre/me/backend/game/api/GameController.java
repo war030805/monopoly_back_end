@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.application.GameService;
 import warre.me.backend.game.domain.game.GameId;
@@ -80,6 +81,47 @@ public class GameController {
     ) {
         PlayerId playerId= PlayerId.fromToken(token);
         gameService.payTax(new GameId(gameId), playerId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/pullCard/{gameId}")
+    public ResponseEntity<Void> pullCard(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.pullCard(new GameId(gameId), playerId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/saveCard/{gameId}")
+    public ResponseEntity<Void> saveCard(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.saveCard(new GameId(gameId), playerId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/useCard/{gameId}")
+    public ResponseEntity<Void> useCard(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.useCard(new GameId(gameId), playerId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/useSavedCard/{gameId}/{cardSpecificType}")
+    public ResponseEntity<Void> useSavedCard(
+            @PathVariable UUID gameId,
+            @PathVariable CardSpecificType cardSpecificType,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.useSavedCard(new GameId(gameId), playerId, cardSpecificType);
         return ResponseEntity.ok().build();
     }
 

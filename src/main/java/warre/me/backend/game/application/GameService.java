@@ -2,6 +2,7 @@ package warre.me.backend.game.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
@@ -82,6 +83,42 @@ public class GameService {
                 .orElseThrow(gameId::notFound);
 
         game.payTax(playerId);
+
+        gameRepository.save(game);
+    }
+
+    public void pullCard(GameId gameId, PlayerId playerId) {
+        var game= gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.pullCard(playerId);
+
+        gameRepository.save(game);
+    }
+
+    public void saveCard(GameId gameId, PlayerId playerId) {
+        var game= gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.saveCard(playerId);
+
+        gameRepository.save(game);
+    }
+
+    public void useCard(GameId gameId, PlayerId playerId) {
+        var game= gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.useCard(playerId);
+
+        gameRepository.save(game);
+    }
+
+    public void useSavedCard(GameId gameId, PlayerId playerId, CardSpecificType cardSpecificType) {
+        var game= gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.useSavedCard(playerId, cardSpecificType);
 
         gameRepository.save(game);
     }

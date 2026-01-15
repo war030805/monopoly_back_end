@@ -3,6 +3,7 @@ package warre.me.backend.game.domain.game;
 import lombok.Getter;
 import warre.me.backend.chared.domain.NotFoundException;
 import warre.me.backend.chared.domain.cards.Card;
+import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.chared.domain.cards.chance.ChanceCards;
 import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
 import warre.me.backend.chared.domain.dice.Dices;
@@ -173,5 +174,61 @@ public class Game {
                 .forEach(gamePlayer -> gamePlayer.giveMoney(money));
 
         payer.payMoney(money * getPlayersNotBankrupt().size()-1);
+    }
+
+    public void pullCard(PlayerId playerId) {
+        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        var tileType=player.getTileTypeStandingOn();
+
+        var card= switch (tileType) {
+            case COMMUNITY_CHEST -> pullCardOfCommunityChest();
+            case CHANCE -> pullCardOfChance();
+            default -> throw new GameException("gannot pull card when player stands on not pullable place");
+        };
+
+        player.pullCard(card);
+    }
+
+    private Card pullCardOfCommunityChest() {
+        return communityChestCards.removeFirst();
+    }
+
+    public Card pullCardOfChance() {
+        return chanceCards.removeFirst();
+    }
+
+    public void saveCard(PlayerId playerId) {
+        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        player.saveCard();
+    }
+
+    public void useCard(PlayerId playerId) {
+        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        var card=player.useCard();
+
+        card.doThingUseCard(this, player);
+
+        addCardToRightDeck(card);
+    }
+
+    private void addCardToRightDeck(Card card) {
+        var listToAdd= switch (card.getDeckType()) {
+            case COMMUNITY_CHEST -> communityChestCards;
+            case CHANCE -> chanceCards;
+        };
+
+        listToAdd.add(card);
+    }
+    public void useSavedCard(PlayerId playerId, CardSpecificType cardSpecificType) {
+        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        var card=player.useSavedCard(cardSpecificType);
+
+        card.doThingUseCard(this, player);
+
+        addCardToRightDeck(card);
     }
 }

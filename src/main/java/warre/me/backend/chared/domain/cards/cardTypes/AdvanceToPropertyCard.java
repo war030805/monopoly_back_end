@@ -10,8 +10,8 @@ import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 public class AdvanceToPropertyCard extends Card {
     private final int placeToMove;
     private final Property property;
-    public AdvanceToPropertyCard(CardType cardType, Property property, DeckType deckType) {
-        super("",cardType, deckType);
+    public AdvanceToPropertyCard(CardSpecificType cardSpecificType, Property property, DeckType deckType) {
+        super("", cardSpecificType, deckType);
         placeToMove= Board.getPlaceOfProperty(property);
         this.property=property;
     }
@@ -19,6 +19,11 @@ public class AdvanceToPropertyCard extends Card {
     @Override
     public void doThingUseCard(Game game, GamePlayer gamePlayer) {
         gamePlayer.goToPlace(placeToMove);
+    }
+
+    @Override
+    public CardType getCardType() {
+        return CardType.MOVER;
     }
 
     @Override

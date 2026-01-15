@@ -8,8 +8,8 @@ import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 public class PaysPerHouseAndHotelCard extends Card {
     private final int paysPerHouse;
     private final int paysPerHotel;
-    public PaysPerHouseAndHotelCard(String name, CardType cardType, int paysPerHouse, int paysPerHotel, DeckType deckType) {
-        super(name, cardType, deckType);
+    public PaysPerHouseAndHotelCard(String name, CardSpecificType cardSpecificType, int paysPerHouse, int paysPerHotel, DeckType deckType) {
+        super(name, cardSpecificType, deckType);
         this.paysPerHouse = paysPerHouse;
         this.paysPerHotel = paysPerHotel;
     }
@@ -20,5 +20,10 @@ public class PaysPerHouseAndHotelCard extends Card {
         int hotelsToPay= gamePlayer.getCountOfHotels() * paysPerHotel;
 
         gamePlayer.payMoney(hotelsToPay + housesToPay);
+    }
+
+    @Override
+    public CardType getCardType() {
+        return CardType.TRANSACTION;
     }
 }

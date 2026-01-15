@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static warre.me.backend.chared.domain.board.property.Property.*;
-import static warre.me.backend.chared.domain.cards.cardTypes.CardType.*;
+import static warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType.*;
 
 public abstract class ChanceCards {
-    private final static Map<CardType, Card> cards = makeCards();
+    private final static Map<CardSpecificType, Card> cards = makeCards();
 
 
-    private static Map<CardType, Card> makeCards() {
+    private static Map<CardSpecificType, Card> makeCards() {
         return Stream.of(
                         new GoToPlaceCard("Advance to \"Go\". (Collect $200)", ADVANCE_TO_GO_COLLECT_200,
                                 0, false, DeckType.CHANCE),
@@ -67,7 +67,7 @@ public abstract class ChanceCards {
                         new MoneyTransactionCard("Your building and loan matures. Collect $150.",
                                 BUILDING_AND_LOAN_MATURES_COLLECT_150, 150, false, DeckType.CHANCE)
                 )
-                .collect(Collectors.toMap(Card::getCardType, Function.identity()));
+                .collect(Collectors.toMap(Card::getCardSpecificType, Function.identity()));
     }
 
     private static Card makeRailRoadCard() {
@@ -84,7 +84,7 @@ public abstract class ChanceCards {
         return deck;
     }
 
-    public static Card getCard(CardType cardType) {
-        return cards.get(cardType);
+    public static Card getCard(CardSpecificType cardSpecificType) {
+        return cards.get(cardSpecificType);
     }
 }

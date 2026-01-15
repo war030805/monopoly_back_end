@@ -2,7 +2,7 @@ package warre.me.backend.game.infrastructure.game.jpa;
 
 import jakarta.persistence.*;
 import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.cardTypes.CardType;
+import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.chared.domain.cards.chance.ChanceCards;
 import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
 import warre.me.backend.chared.domain.dice.Dices;
@@ -33,10 +33,10 @@ public class JpaGameEntity {
     private List<JpaGamePlayerEntity> players;
 
     @ElementCollection
-    private List<CardType> chanceCards;
+    private List<CardSpecificType> chanceCards;
 
     @ElementCollection
-    private List<CardType> communityChestCards;
+    private List<CardSpecificType> communityChestCards;
 
     @Column(nullable = false)
     private UUID currentPlayer;
@@ -47,7 +47,7 @@ public class JpaGameEntity {
     protected JpaGameEntity() {
     } // for JPA
 
-    public JpaGameEntity(UUID id, UUID lobbyFromGame, List<JpaGamePlayerEntity> players, List<CardType> chanceCards, List<CardType> communityChestCards, UUID currentPlayer, Dices dices) {
+    public JpaGameEntity(UUID id, UUID lobbyFromGame, List<JpaGamePlayerEntity> players, List<CardSpecificType> chanceCards, List<CardSpecificType> communityChestCards, UUID currentPlayer, Dices dices) {
         this.id = id;
         this.players = players;
         this.currentPlayer = currentPlayer;
@@ -67,10 +67,10 @@ public class JpaGameEntity {
                         .map(gamePlayer -> JpaGamePlayerEntity.fromDomain(gamePlayer, game.getGameId()))
                         .toList(),
                 game.getChanceCards().stream()
-                        .map(Card::getCardType)
+                        .map(Card::getCardSpecificType)
                         .toList(),
                 game.getCommunityChestCards().stream()
-                        .map(Card::getCardType)
+                        .map(Card::getCardSpecificType)
                         .toList(),
                 game.getCurrentPlayer().id(),
                 game.getDices()

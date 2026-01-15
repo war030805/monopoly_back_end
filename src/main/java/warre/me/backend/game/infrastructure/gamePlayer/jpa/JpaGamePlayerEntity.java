@@ -1,10 +1,6 @@
 package warre.me.backend.game.infrastructure.gamePlayer.jpa;
 
 import jakarta.persistence.*;
-import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.cardTypes.CardType;
-import warre.me.backend.chared.domain.cards.chance.ChanceCards;
-import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.gamePlayer.Action;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
@@ -46,18 +42,12 @@ public class JpaGamePlayerEntity {
     @Column(nullable = false)
     private String color;
 
-    @ElementCollection
-    private List<CardType> chanceCardsOwned;
-
-    @ElementCollection
-    private List<CardType> communityChestCardsOwned;
-
     protected JpaGamePlayerEntity() {
     } // for JPA
 
     public JpaGamePlayerEntity(JpaGamePlayerId gamePlayerId, int money, int place,
                                List<JpaOwnPropertyEntity> ownsProperties, int movePlace, boolean isBankrupt,
-                               Action action, String color, List<CardType> chanceCardsOwned, List<CardType> communityChestCardsOwned) {
+                               Action action, String color) {
         this.gamePlayerId = gamePlayerId;
         this.money = money;
         this.place = place;
@@ -66,8 +56,6 @@ public class JpaGamePlayerEntity {
         this.isBankrupt = isBankrupt;
         this.action = action;
         this.color= color;
-        this.chanceCardsOwned = chanceCardsOwned;
-        this.communityChestCardsOwned = communityChestCardsOwned;
     }
 
     public static JpaGamePlayerEntity fromDomain(GamePlayer gamePlayer, GameId gameId) {
@@ -81,13 +69,7 @@ public class JpaGamePlayerEntity {
                 gamePlayer.getMovePlace(),
                 gamePlayer.isBankrupt(),
                 gamePlayer.getAction(),
-                gamePlayer.getColor(),
-                gamePlayer.getChanceCardsOwned().stream()
-                        .map(Card::getCardType)
-                        .toList(),
-                gamePlayer.getCommunityChestCardsOwned().stream()
-                        .map(Card::getCardType)
-                        .toList()
+                gamePlayer.getColor()
         );
     }
 
@@ -103,13 +85,7 @@ public class JpaGamePlayerEntity {
                 place,
                 isBankrupt,
                 action,
-                color,
-                chanceCardsOwned.stream()
-                        .map(ChanceCards::getCard)
-                        .toList(),
-                communityChestCardsOwned.stream()
-                        .map(CommunityChestCards::getCard)
-                        .toList()
+                color
         );
     }
 }

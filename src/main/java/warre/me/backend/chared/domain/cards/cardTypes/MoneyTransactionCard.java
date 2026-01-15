@@ -9,8 +9,8 @@ public class MoneyTransactionCard extends Card {
 
     private final int money;
     private final boolean paying;
-    public MoneyTransactionCard(String name, CardType cardType, int money, boolean paying, DeckType deckType) {
-        super(name, cardType, deckType);
+    public MoneyTransactionCard(String name, CardSpecificType cardSpecificType, int money, boolean paying, DeckType deckType) {
+        super(name, cardSpecificType, deckType);
         this.money=money;
         this.paying = paying;
     }
@@ -23,5 +23,10 @@ public class MoneyTransactionCard extends Card {
         } else {
             gamePlayer.giveMoney(money);
         }
+    }
+
+    @Override
+    public CardType getCardType() {
+        return CardType.TRANSACTION;
     }
 }

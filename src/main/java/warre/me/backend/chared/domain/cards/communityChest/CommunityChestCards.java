@@ -11,12 +11,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static warre.me.backend.chared.domain.cards.cardTypes.CardType.*;
+import static warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType.*;
 
 public abstract class CommunityChestCards {
-    private static final Map<CardType, Card> cards = makeCards();
+    private static final Map<CardSpecificType, Card> cards = makeCards();
 
-    private static Map<CardType, Card> makeCards() {
+    private static Map<CardSpecificType, Card> makeCards() {
         return Stream.of(
                         // Advance to Go (Collect $200)
                         new GoToPlaceCard("Advance to \"Go\". (Collect $200)",
@@ -90,7 +90,7 @@ public abstract class CommunityChestCards {
                         new MoneyTransactionCard("You inherit $100.",
                                 INHERIT_100, 100, false, DeckType.COMMUNITY_CHEST)
                 )
-                .collect(Collectors.toMap(Card::getCardType, Function.identity()));
+                .collect(Collectors.toMap(Card::getCardSpecificType, Function.identity()));
     }
 
     public static List<Card> makeDeck() {
@@ -105,7 +105,7 @@ public abstract class CommunityChestCards {
         return deck;
     }
 
-    public static Card getCard(CardType cardType) {
-        return cards.get(cardType);
+    public static Card getCard(CardSpecificType cardSpecificType) {
+        return cards.get(cardSpecificType);
     }
 }

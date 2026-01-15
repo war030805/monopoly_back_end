@@ -18,7 +18,9 @@ public record PlayerDataDto(
         boolean isBankrupt,
         Action action,
         String color,
-        TileType onTileTileType
+        TileType onTileTileType,
+        List<CardDto> ownedCards,
+        CardDto cardGot
 ) {
     public static PlayerDataDto fromDomain(GamePlayer gamePlayer, Dices dices) {
         return new PlayerDataDto(
@@ -32,7 +34,13 @@ public record PlayerDataDto(
                 gamePlayer.isBankrupt(),
                 gamePlayer.getAction(),
                 gamePlayer.getColor(),
-                Board.getTileTypeFromPlace(gamePlayer.getPlace())
+                Board.getTileTypeFromPlace(gamePlayer.getPlace()),
+                gamePlayer.getOwnedCards().stream()
+                        .map(CardDto::fromDomain)
+                        .toList(),
+                gamePlayer.getCardGotOptional()
+                        .map(CardDto::fromDomain)
+                        .orElse(null)
         );
     }
 }
