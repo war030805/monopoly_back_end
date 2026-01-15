@@ -33,6 +33,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.GET, "/api/board").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/card/chanceCards").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/card/communityCards").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(mgmt -> mgmt.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(rs -> rs.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));

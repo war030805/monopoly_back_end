@@ -1,5 +1,6 @@
 package warre.me.backend.game.api.dto;
 
+import warre.me.backend.card.api.dto.CardDto;
 import warre.me.backend.chared.domain.board.Board;
 import warre.me.backend.chared.domain.board.tile.TileType;
 import warre.me.backend.chared.domain.dice.Dices;

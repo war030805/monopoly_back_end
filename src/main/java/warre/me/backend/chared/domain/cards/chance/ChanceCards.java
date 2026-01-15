@@ -87,4 +87,8 @@ public abstract class ChanceCards {
     public static Card getCard(CardSpecificType cardSpecificType) {
         return cards.get(cardSpecificType);
     }
+
+    public static List<Card> getAllCards() {
+        return cards.values().stream().toList();
+    }
 }

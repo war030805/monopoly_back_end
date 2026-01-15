@@ -39,5 +39,11 @@ public enum CardSpecificType implements NotFoundThrower {
     public String notFoundMessage() {
         return "could not find cardSpecificType of name" + this.name();
     }
+
+
+    @Override
+    public String toString() {
+        return name().toLowerCase().replace("_", " ");
+    }
 }
 

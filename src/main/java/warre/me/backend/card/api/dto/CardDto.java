@@ -1,4 +1,4 @@
-package warre.me.backend.game.api.dto;
+package warre.me.backend.card.api.dto;
 
 import warre.me.backend.chared.domain.cards.Card;
 import warre.me.backend.chared.domain.cards.DeckType;
