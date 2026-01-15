@@ -26,4 +26,8 @@ public abstract class Card {
     }
 
     public abstract CardType getCardType();
+
+    public int getMoneyToPay() {
+        return 0;
+    }
 }

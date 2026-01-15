@@ -306,4 +306,15 @@ public class GamePlayer implements Comparable<GamePlayer> {
         this.action=USED_SAVED_CARD;
         return cardToUse;
     }
+
+    public boolean canPlayCurrentAction() {
+        return switch (action) {
+            case WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD, USED_SAVED_CARD -> true;
+            case PULLED_CARD -> canPay(cardGot.getMoneyToPay());
+        };
+    }
+
+    private boolean canPay(int moneyToPay) {
+        return money > moneyToPay;
+    }
 }

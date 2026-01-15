@@ -29,4 +29,12 @@ public class MoneyTransactionCard extends Card {
     public CardType getCardType() {
         return CardType.TRANSACTION;
     }
+
+    @Override
+    public int getMoneyToPay() {
+        if (paying) {
+            return money;
+        }
+        return -money;
+    }
 }

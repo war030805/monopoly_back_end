@@ -21,7 +21,8 @@ public record PlayerDataDto(
         String color,
         TileType onTileTileType,
         List<CardDto> ownedCards,
-        CardDto cardGot
+        CardDto cardGot,
+        boolean canPay
 ) {
     public static PlayerDataDto fromDomain(GamePlayer gamePlayer, Dices dices) {
         return new PlayerDataDto(
@@ -41,7 +42,8 @@ public record PlayerDataDto(
                         .toList(),
                 gamePlayer.getCardGotOptional()
                         .map(CardDto::fromDomain)
-                        .orElse(null)
+                        .orElse(null),
+                gamePlayer.canPlayCurrentAction()
         );
     }
 }
