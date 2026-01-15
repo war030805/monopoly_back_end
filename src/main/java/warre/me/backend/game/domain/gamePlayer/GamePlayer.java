@@ -218,7 +218,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void payMoney(int money) {
-        if (this.money> money) {
+        if (money> this.money) {
             throw new MoneyException();
         }
         this.money-=money;
@@ -257,6 +257,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         }
 
         this.cardGot=card;
+        this.action=PULLED_CARD;
     }
 
     public TileType getTileTypeStandingOn() {
@@ -278,6 +279,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         ownedCards.add(cardGot);
 
+        this.action=SAVED_CARD;
+
         cardGot=null;
     }
 
@@ -287,6 +290,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
         }
         var cardTed= cardGot;
         cardGot=null;
+
+        this.action=USED_CARD;
         return cardTed;
     }
 
@@ -298,6 +303,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         ownedCards.remove(cardToUse);
 
+        this.action=USED_SAVED_CARD;
         return cardToUse;
     }
 }

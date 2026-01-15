@@ -11,5 +11,9 @@ public enum Action {
     TROWING_DICES,
     MOVED,
     BUY_PROPERTY,
-    PAYING_TAXES
+    PAYING_TAXES,
+    PULLED_CARD,
+    USED_CARD,
+    SAVED_CARD,
+    USED_SAVED_CARD
 }
