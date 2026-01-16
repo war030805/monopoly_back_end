@@ -15,5 +15,5 @@ public enum Action {
     PULLED_CARD,
     USED_CARD,
     SAVED_CARD,
-    USED_SAVED_CARD
+    PAY_RENT, USED_SAVED_CARD
 }

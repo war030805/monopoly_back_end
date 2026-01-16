@@ -123,6 +123,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
         }
 
         payMoney(moneyToPay);
+
+        setCurrentAction(PAY_RENT);
     }
 
     private int getMoneyFromPlayerForProperty(Property property, Dices dices) {
@@ -171,7 +173,6 @@ public class GamePlayer implements Comparable<GamePlayer> {
     public void move(Dices dices) {
         bankruptCheck();
         addToPlace(dices.sum());
-        action=MOVED;
         setCurrentAction(MOVED);
     }
 
@@ -318,7 +319,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
     public boolean canPlayCurrentAction(Game game) {
         return switch (action) {
-            case WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD, USED_SAVED_CARD -> true;
+            case PAY_RENT, WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD,
+                 USED_SAVED_CARD -> true;
             case PULLED_CARD -> canPay(cardGot.getMoneyToPay(game, this));
         };
     }

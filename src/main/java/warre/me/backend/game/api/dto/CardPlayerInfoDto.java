@@ -6,7 +6,7 @@ import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 
 public record CardPlayerInfoDto(
-        CardDto cardDto,
+        CardDto card,
         int moneyToPay,
         int placeEndsUpOn
 ) {
