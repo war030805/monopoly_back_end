@@ -27,4 +27,9 @@ public class GoToPlaceCard extends Card {
     public CardType getCardType() {
         return CardType.MOVER;
     }
+
+    @Override
+    public int calcPlaceEndsUpOn(GamePlayer gamePlayer) {
+        return place;
+    }
 }

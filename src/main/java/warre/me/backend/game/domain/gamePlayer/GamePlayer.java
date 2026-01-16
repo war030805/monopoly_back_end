@@ -9,6 +9,7 @@ import warre.me.backend.chared.domain.cards.Card;
 import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.chared.domain.dice.Dices;
 import warre.me.backend.game.domain.game.BuyException;
+import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameException;
 import warre.me.backend.game.domain.game.MoneyException;
 import warre.me.backend.game.domain.property.OwnProperty;
@@ -48,6 +49,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
     @Getter
     private Card cardGot;
 
+    private final List<Action> actionsDone;
+
     public GamePlayer(PlayerId playerId, int movePlace, String color) {
         this.playerId = playerId;
         this.movePlace = movePlace;
@@ -56,6 +59,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         action=WAITING;
         this.color=color;
         ownedCards=new ArrayList<>();
+        actionsDone=new LinkedList<>();
     }
 
     public GamePlayer(PlayerId playerId, Map<Property, OwnProperty> ownsProperties, int movePlace, int money, int place,
@@ -69,6 +73,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         this.action = action;
         this.color=color;
         ownedCards=new ArrayList<>();
+        actionsDone=new LinkedList<>();
     }
 
     public void addToPlace(int places) {
@@ -96,7 +101,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         payMoney(property.getPropertyBuyCost());
 
-        action=BUY_PROPERTY;
+        setCurrentAction(BUY_PROPERTY);
 
         ownsProperties.put(property, new OwnProperty(
                 property
@@ -167,6 +172,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         bankruptCheck();
         addToPlace(dices.sum());
         action=MOVED;
+        setCurrentAction(MOVED);
     }
 
     public OwnProperty getOwnPropertyByProperty(Property property) {
@@ -181,12 +187,13 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
     public void throwDices() {
         bankruptCheck();
-        action= TROWING_DICES;
+        setCurrentAction(TROWING_DICES);
     }
 
     public void endMove() {
         bankruptCheck();
-        action= WAITING;
+        setCurrentAction(WAITING);
+        actionsDone.clear();
     }
 
     public void payTax() {
@@ -195,7 +202,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
         if (tax> money) {
             throw new MoneyException("you do not have enough money to pay taxes");
         }
-        action=PAYING_TAXES;
+
+        setCurrentAction(PAYING_TAXES);
         payMoney(tax);
     }
 
@@ -257,7 +265,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
         }
 
         this.cardGot=card;
-        this.action=PULLED_CARD;
+
+        setCurrentAction(PULLED_CARD);
     }
 
     public TileType getTileTypeStandingOn() {
@@ -279,7 +288,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         ownedCards.add(cardGot);
 
-        this.action=SAVED_CARD;
+        setCurrentAction(SAVED_CARD);
 
         cardGot=null;
     }
@@ -291,7 +300,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         var cardTed= cardGot;
         cardGot=null;
 
-        this.action=USED_CARD;
+        setCurrentAction(USED_CARD);
         return cardTed;
     }
 
@@ -303,18 +312,29 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         ownedCards.remove(cardToUse);
 
-        this.action=USED_SAVED_CARD;
+        setCurrentAction(USED_SAVED_CARD);
         return cardToUse;
     }
 
-    public boolean canPlayCurrentAction() {
+    public boolean canPlayCurrentAction(Game game) {
         return switch (action) {
             case WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD, USED_SAVED_CARD -> true;
-            case PULLED_CARD -> canPay(cardGot.getMoneyToPay());
+            case PULLED_CARD -> canPay(cardGot.getMoneyToPay(game, this));
         };
     }
 
     private boolean canPay(int moneyToPay) {
         return money > moneyToPay;
+    }
+
+
+    private void setCurrentAction(Action newAction) {
+        actionsDone.add(action);
+
+        action=newAction;
+    }
+
+    public List<Action> getActionsDone() {
+        return actionsDone.stream().toList();
     }
 }

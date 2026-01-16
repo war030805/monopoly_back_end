@@ -4,6 +4,7 @@ import warre.me.backend.card.api.dto.CardDto;
 import warre.me.backend.chared.domain.board.Board;
 import warre.me.backend.chared.domain.board.tile.TileType;
 import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.gamePlayer.Action;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 
@@ -20,11 +21,12 @@ public record PlayerDataDto(
         Action action,
         String color,
         TileType onTileTileType,
-        List<CardDto> ownedCards,
-        CardDto cardGot,
-        boolean canPay
+        List<CardPlayerInfoDto> ownedCards,
+        CardPlayerInfoDto cardGot,
+        boolean canPay,
+        List<Action> actionsDone
 ) {
-    public static PlayerDataDto fromDomain(GamePlayer gamePlayer, Dices dices) {
+    public static PlayerDataDto fromDomain(GamePlayer gamePlayer, Dices dices, Game game) {
         return new PlayerDataDto(
                 gamePlayer.getPlayerId().id(),
                 gamePlayer.getMoney(),
@@ -38,12 +40,13 @@ public record PlayerDataDto(
                 gamePlayer.getColor(),
                 Board.getTileTypeFromPlace(gamePlayer.getPlace()),
                 gamePlayer.getOwnedCards().stream()
-                        .map(CardDto::fromDomain)
+                        .map(card -> CardPlayerInfoDto.fromDomain(card, gamePlayer, game))
                         .toList(),
                 gamePlayer.getCardGotOptional()
-                        .map(CardDto::fromDomain)
+                        .map(card -> CardPlayerInfoDto.fromDomain(card, gamePlayer, game))
                         .orElse(null),
-                gamePlayer.canPlayCurrentAction()
+                gamePlayer.canPlayCurrentAction(game),
+                gamePlayer.getActionsDone()
         );
     }
 }

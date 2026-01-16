@@ -16,9 +16,9 @@ public record GameDataDto(
         return new GameDataDto(
                 game.getGameId().id(),
                 game.getPlayers().stream()
-                        .map(gamePlayer -> PlayerDataDto.fromDomain(gamePlayer, game.getDices()))
+                        .map(gamePlayer -> PlayerDataDto.fromDomain(gamePlayer, game.getDices(), game))
                         .toList(),
-                PlayerDataDto.fromDomain(game.getPlayerById(game.getCurrentPlayer()), game.getDices()),
+                PlayerDataDto.fromDomain(game.getPlayerById(game.getCurrentPlayer()), game.getDices(), game),
                 game.getDices()
         );
     }

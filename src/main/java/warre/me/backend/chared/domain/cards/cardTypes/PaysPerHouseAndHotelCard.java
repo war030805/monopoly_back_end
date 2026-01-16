@@ -16,14 +16,19 @@ public class PaysPerHouseAndHotelCard extends Card {
 
     @Override
     public void doThingUseCard(Game game, GamePlayer gamePlayer) {
-        var housesToPay=gamePlayer.getCountOfHouses() * paysPerHouse;
-        int hotelsToPay= gamePlayer.getCountOfHotels() * paysPerHotel;
-
-        gamePlayer.payMoney(hotelsToPay + housesToPay);
+        gamePlayer.payMoney(getMoneyToPay(game, gamePlayer));
     }
 
     @Override
     public CardType getCardType() {
         return CardType.TRANSACTION;
+    }
+
+    @Override
+    public int getMoneyToPay(Game game, GamePlayer gamePlayer) {
+        var housesToPay=gamePlayer.getCountOfHouses() * paysPerHouse;
+        int hotelsToPay= gamePlayer.getCountOfHotels() * paysPerHotel;
+
+        return hotelsToPay+ housesToPay;
     }
 }

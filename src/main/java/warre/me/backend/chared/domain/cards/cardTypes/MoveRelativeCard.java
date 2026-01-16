@@ -21,4 +21,9 @@ public class MoveRelativeCard extends Card {
     public CardType getCardType() {
         return CardType.MOVER;
     }
+
+    @Override
+    public int calcPlaceEndsUpOn(GamePlayer gamePlayer) {
+        return gamePlayer.getPlace() + places;
+    }
 }

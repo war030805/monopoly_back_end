@@ -16,12 +16,16 @@ public class AdvanceToNearestStreetTypeCard extends Card {
 
     @Override
     public void doThingUseCard(Game game, GamePlayer gamePlayer) {
-        var placeToMove= Board.getNearestStreetTypePlace(gamePlayer.getPlace(), streetType);
-        gamePlayer.goToPlace(placeToMove);
+        gamePlayer.goToPlace(calcPlaceEndsUpOn(gamePlayer));
     }
 
     @Override
     public CardType getCardType() {
         return CardType.MOVER;
+    }
+
+    @Override
+    public int calcPlaceEndsUpOn(GamePlayer gamePlayer) {
+        return Board.getNearestStreetTypePlace(gamePlayer.getPlace(), streetType);
     }
 }

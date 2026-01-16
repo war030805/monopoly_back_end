@@ -30,4 +30,9 @@ public class AdvanceToPropertyCard extends Card {
     public String getName() {
         return String.format("Advance to %s", property.name().toLowerCase().replace("_", " "));
     }
+
+    @Override
+    public int calcPlaceEndsUpOn(GamePlayer gamePlayer) {
+        return placeToMove;
+    }
 }

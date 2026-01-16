@@ -27,7 +27,11 @@ public abstract class Card {
 
     public abstract CardType getCardType();
 
-    public int getMoneyToPay() {
+    public int getMoneyToPay(Game game, GamePlayer gamePlayer) {
+        return Integer.MIN_VALUE;
+    }
+
+    public int calcPlaceEndsUpOn(GamePlayer gamePlayer) {
         return 0;
     }
 }

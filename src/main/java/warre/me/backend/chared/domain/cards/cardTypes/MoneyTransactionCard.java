@@ -31,7 +31,7 @@ public class MoneyTransactionCard extends Card {
     }
 
     @Override
-    public int getMoneyToPay() {
+    public int getMoneyToPay(Game game, GamePlayer gamePlayer) {
         if (paying) {
             return money;
         }

@@ -1,6 +1,7 @@
 package warre.me.backend.game.domain.game;
 
 import lombok.Getter;
+import org.springframework.security.core.parameters.P;
 import warre.me.backend.chared.domain.NotFoundException;
 import warre.me.backend.chared.domain.cards.Card;
 import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
@@ -173,7 +174,11 @@ public class Game {
                 .filter(gamePlayer -> !gamePlayer.equals(payer))
                 .forEach(gamePlayer -> gamePlayer.giveMoney(money));
 
-        payer.payMoney(money * getPlayersNotBankrupt().size()-1);
+        payer.payMoney(money);
+    }
+
+    public int calcPayEachPlayer(int money) {
+        return money * getPlayersNotBankrupt().size()-1;
     }
 
     public void pullCard(PlayerId playerId) {

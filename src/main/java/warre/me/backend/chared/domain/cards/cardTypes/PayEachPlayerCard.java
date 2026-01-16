@@ -21,4 +21,9 @@ public class PayEachPlayerCard extends Card {
     public CardType getCardType() {
         return CardType.TRANSACTION;
     }
+
+    @Override
+    public int getMoneyToPay(Game game, GamePlayer gamePlayer) {
+        return game.calcPayEachPlayer(money);
+    }
 }
