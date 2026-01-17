@@ -18,7 +18,7 @@ public class AdvanceToPropertyCard extends Card {
 
     @Override
     public void doThingUseCard(Game game, GamePlayer gamePlayer) {
-        gamePlayer.goToPlace(placeToMove);
+        gamePlayer.goToPlaceCard(placeToMove);
     }
 
     @Override

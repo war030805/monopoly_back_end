@@ -91,4 +91,8 @@ public enum Property implements NotFoundThrower {
     public boolean isNormalProperty() {
         return !streetType.equals(StreetType.UTILITY) && !streetType.equals(StreetType.STATION);
     }
+
+    public boolean needsToTrowDices() {
+        return streetType.equals(StreetType.UTILITY);
+    }
 }

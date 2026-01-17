@@ -19,7 +19,7 @@ public class GoToPlaceCard extends Card {
         if (toPrison) {
             gamePlayer.goToPrison();
         } else {
-            gamePlayer.goToPlace(place);
+            gamePlayer.goToPlaceCard(place);
         }
     }
 

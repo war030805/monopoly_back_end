@@ -16,7 +16,7 @@ public class AdvanceToNearestStreetTypeCard extends Card {
 
     @Override
     public void doThingUseCard(Game game, GamePlayer gamePlayer) {
-        gamePlayer.goToPlace(calcPlaceEndsUpOn(gamePlayer));
+        gamePlayer.goToPlaceCard(calcPlaceEndsUpOn(gamePlayer));
     }
 
     @Override
