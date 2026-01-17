@@ -186,12 +186,12 @@ public class GamePlayer implements Comparable<GamePlayer> {
         return Integer.compare(movePlace, o.movePlace);
     }
 
-    public void throwDices() {
+    public void throwDices(DoAction doAction) {
         bankruptCheck();
-        if (Board.getTileTypeFromPlace(place).equals(TileType.PROPERTY) && Board.getPropertyFromPlace(place).needsToTrowDices()) {
-            setCurrentAction(TROWING_DICES_FOR_PROPERTY);
-        } else {
-            setCurrentAction(TROWING_DICES);
+
+        switch (doAction) {
+            case MOVING -> setCurrentAction(TROWING_DICES);
+            case PROPERTY -> setCurrentAction(TROWING_DICES_FOR_PROPERTY);
         }
 
     }
@@ -326,7 +326,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     public boolean canPlayCurrentAction(Game game) {
         return switch (action) {
             case PAY_RENT, WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD,
-                 USED_SAVED_CARD, MOVED_AFTER_CARD -> true;
+                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY -> true;
             case PULLED_CARD -> canPay(cardGot.getMoneyToPay(game, this));
         };
     }

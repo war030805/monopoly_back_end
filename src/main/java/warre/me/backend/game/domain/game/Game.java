@@ -8,6 +8,7 @@ import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.chared.domain.cards.chance.ChanceCards;
 import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
 import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.game.domain.gamePlayer.DoAction;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
 import warre.me.backend.player.domain.PlayerId;
@@ -62,9 +63,9 @@ public class Game {
         this.dices = dices;
     }
 
-    public void trowDicesByPlayer(PlayerId playerId) {
+    public void trowDicesByPlayer(PlayerId playerId, DoAction doAction) {
         var player=getCurrentPlayerAndCheckIsPlayer(playerId);
-        player.throwDices();
+        player.throwDices(doAction);
         dices=Dices.trowDices();
     }
 

@@ -8,6 +8,7 @@ import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.application.GameService;
 import warre.me.backend.game.domain.game.GameId;
+import warre.me.backend.game.domain.gamePlayer.DoAction;
 import warre.me.backend.player.domain.PlayerId;
 
 import java.util.UUID;
@@ -22,13 +23,14 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping("/rollDice/{gameId}")
+    @PostMapping("/rollDice/{gameId}/{doAction}")
     public ResponseEntity<Void> rollDice(
             @PathVariable UUID gameId,
+            @PathVariable DoAction doAction,
             @AuthenticationPrincipal Jwt token
     ) {
         PlayerId playerId= PlayerId.fromToken(token);
-        gameService.rollDice(new GameId(gameId), playerId);
+        gameService.rollDice(new GameId(gameId), playerId, doAction);
 
         return ResponseEntity.ok().build();
     }

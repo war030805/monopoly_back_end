@@ -7,6 +7,7 @@ import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.game.GameRepository;
+import warre.me.backend.game.domain.gamePlayer.DoAction;
 import warre.me.backend.player.domain.PlayerId;
 
 @Service
@@ -18,11 +19,11 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public Game rollDice(GameId gameId, PlayerId playerId) {
+    public Game rollDice(GameId gameId, PlayerId playerId, DoAction doAction) {
         var game= gameRepository.findByGameId(gameId)
                 .orElseThrow(gameId::notFound);
 
-        game.trowDicesByPlayer(playerId);
+        game.trowDicesByPlayer(playerId, doAction);
 
         gameRepository.save(game);
         return game;
