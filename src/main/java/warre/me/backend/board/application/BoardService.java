@@ -2,8 +2,8 @@ package warre.me.backend.board.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import warre.me.backend.chared.domain.board.Board;
-import warre.me.backend.chared.domain.board.tile.Tile;
+import warre.me.backend.shared.domain.board.Board;
+import warre.me.backend.shared.domain.board.tile.Tile;
 
 import java.util.List;
 

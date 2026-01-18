@@ -1,6 +1,6 @@
 package warre.me.backend.game.api.dto;
 
-import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.shared.domain.dice.Dices;
 import warre.me.backend.game.domain.game.Game;
 
 import java.util.List;

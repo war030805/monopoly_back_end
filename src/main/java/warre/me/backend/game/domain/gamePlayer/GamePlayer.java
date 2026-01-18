@@ -1,13 +1,13 @@
 package warre.me.backend.game.domain.gamePlayer;
 
 import lombok.Getter;
-import warre.me.backend.chared.domain.board.Board;
-import warre.me.backend.chared.domain.board.property.Property;
-import warre.me.backend.chared.domain.board.property.StreetType;
-import warre.me.backend.chared.domain.board.tile.TileType;
-import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
-import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.shared.domain.board.Board;
+import warre.me.backend.shared.domain.board.property.Property;
+import warre.me.backend.shared.domain.board.property.StreetType;
+import warre.me.backend.shared.domain.board.tile.TileType;
+import warre.me.backend.shared.domain.cards.Card;
+import warre.me.backend.shared.domain.cards.cardTypes.CardSpecificType;
+import warre.me.backend.shared.domain.dice.Dices;
 import warre.me.backend.game.domain.game.BuyException;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameException;
@@ -233,6 +233,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void payMoney(int money) {
+        bankruptCheck();
         if (money> this.money) {
             throw new MoneyException();
         }
@@ -267,6 +268,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void pullCard(Card card) {
+        bankruptCheck();
         if (this.cardGot!=null) {
             throw new GameException("you cannot add a cord if you got already one card");
         }
@@ -285,6 +287,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void saveCard() {
+        bankruptCheck();
         if (cardGot==null) {
             throw new GameException("cannot save card if you got none");
         }
@@ -301,6 +304,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public Card useCard() {
+        bankruptCheck();
         if (cardGot==null) {
             throw new GameException("cannot use card if you got none");
         }
@@ -312,6 +316,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public Card useSavedCard(CardSpecificType cardSpecificType) {
+        bankruptCheck();
+
         var cardToUse=ownedCards.stream()
                 .filter(card -> card.getCardSpecificType().equals(cardSpecificType))
                 .findAny()
@@ -326,7 +332,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     public boolean canPlayCurrentAction(Game game) {
         return switch (action) {
             case PAY_RENT, WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD,
-                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY -> true;
+                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY, AUCTION -> true;
             case PULLED_CARD -> canPay(cardGot.getMoneyToPay(game, this));
         };
     }
@@ -337,6 +343,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
 
     private void setCurrentAction(Action newAction) {
+        bankruptCheck();
         actionsDone.add(action);
 
         action=newAction;
@@ -344,5 +351,12 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
     public List<Action> getActionsDone() {
         return actionsDone.stream().toList();
+    }
+
+    public void startAuction() {
+        bankruptCheck();
+        setCurrentAction(Action.AUCTION);
+
+        Board.getPropertyFromPlace(place);
     }
 }

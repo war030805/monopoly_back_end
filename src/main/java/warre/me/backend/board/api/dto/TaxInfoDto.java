@@ -1,6 +1,6 @@
 package warre.me.backend.board.api.dto;
 
-import warre.me.backend.chared.domain.board.tile.Tile;
+import warre.me.backend.shared.domain.board.tile.Tile;
 
 public record TaxInfoDto(
         int tax

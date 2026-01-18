@@ -1,13 +1,14 @@
 package warre.me.backend.game.domain.game;
 
 import lombok.Getter;
-import org.springframework.security.core.parameters.P;
-import warre.me.backend.chared.domain.NotFoundException;
-import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
-import warre.me.backend.chared.domain.cards.chance.ChanceCards;
-import warre.me.backend.chared.domain.cards.communityChest.CommunityChestCards;
-import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.auction.domain.AuctionException;
+import warre.me.backend.shared.domain.NotFoundException;
+import warre.me.backend.shared.domain.board.property.Property;
+import warre.me.backend.shared.domain.cards.Card;
+import warre.me.backend.shared.domain.cards.cardTypes.CardSpecificType;
+import warre.me.backend.shared.domain.cards.chance.ChanceCards;
+import warre.me.backend.shared.domain.cards.communityChest.CommunityChestCards;
+import warre.me.backend.shared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.DoAction;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.lobby.domain.lobby.LobbyId;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static warre.me.backend.chared.domain.board.Board.getPropertyFromPlace;
+import static warre.me.backend.shared.domain.board.Board.getPropertyFromPlace;
 
 
 public class Game {
@@ -236,5 +237,19 @@ public class Game {
         card.doThingUseCard(this, player);
 
         addCardToRightDeck(card);
+    }
+
+    public GamePlayer startAuction(PlayerId playerId) {
+        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        var ownsProperty=ownsProperty(player);
+
+        if (ownsProperty) {
+            throw new AuctionException("you cannot auction a property that is owned");
+        }
+
+        player.startAuction();
+
+        return player;
     }
 }

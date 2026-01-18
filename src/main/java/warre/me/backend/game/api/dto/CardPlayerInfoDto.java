@@ -1,7 +1,7 @@
 package warre.me.backend.game.api.dto;
 
 import warre.me.backend.card.api.dto.CardDto;
-import warre.me.backend.chared.domain.cards.Card;
+import warre.me.backend.shared.domain.cards.Card;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 

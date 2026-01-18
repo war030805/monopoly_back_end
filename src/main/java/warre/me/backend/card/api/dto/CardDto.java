@@ -1,9 +1,9 @@
 package warre.me.backend.card.api.dto;
 
-import warre.me.backend.chared.domain.cards.Card;
-import warre.me.backend.chared.domain.cards.DeckType;
-import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
-import warre.me.backend.chared.domain.cards.cardTypes.CardType;
+import warre.me.backend.shared.domain.cards.Card;
+import warre.me.backend.shared.domain.cards.DeckType;
+import warre.me.backend.shared.domain.cards.cardTypes.CardSpecificType;
+import warre.me.backend.shared.domain.cards.cardTypes.CardType;
 
 public record CardDto(
         CardSpecificType cardSpecificType,

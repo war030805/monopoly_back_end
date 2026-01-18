@@ -1,8 +1,8 @@
 package warre.me.backend.board.api.dto;
 
-import warre.me.backend.chared.domain.board.property.Property;
-import warre.me.backend.chared.domain.board.property.StreetType;
-import warre.me.backend.chared.domain.board.tile.Tile;
+import warre.me.backend.shared.domain.board.property.Property;
+import warre.me.backend.shared.domain.board.property.StreetType;
+import warre.me.backend.shared.domain.board.tile.Tile;
 
 import java.util.List;
 

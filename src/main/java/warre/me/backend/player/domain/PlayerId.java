@@ -3,8 +3,8 @@ package warre.me.backend.player.domain;
 import org.jmolecules.ddd.annotation.ValueObject;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.Assert;
-import warre.me.backend.chared.domain.NotFoundException;
-import warre.me.backend.chared.domain.NotFoundThrower;
+import warre.me.backend.shared.domain.NotFoundException;
+import warre.me.backend.shared.domain.NotFoundThrower;
 
 import java.util.UUID;
 

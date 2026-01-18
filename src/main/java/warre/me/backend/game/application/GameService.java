@@ -2,7 +2,9 @@ package warre.me.backend.game.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
+import warre.me.backend.game.application.eventPublicher.GameEventPublisher;
+import warre.me.backend.shared.application.FacadeGameService;
+import warre.me.backend.shared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
@@ -12,11 +14,13 @@ import warre.me.backend.player.domain.PlayerId;
 
 @Service
 @Transactional
-public class GameService {
+public class GameService implements FacadeGameService {
     private final GameRepository gameRepository;
+    private final GameEventPublisher gameEventPublisher;
 
-    public GameService(GameRepository gameRepository) {
+    public GameService(GameRepository gameRepository, GameEventPublisher gameEventPublisher) {
         this.gameRepository = gameRepository;
+        this.gameEventPublisher = gameEventPublisher;
     }
 
     public Game rollDice(GameId gameId, PlayerId playerId, DoAction doAction) {
@@ -122,5 +126,14 @@ public class GameService {
         game.useSavedCard(playerId, cardSpecificType);
 
         gameRepository.save(game);
+    }
+
+    public void startAuction(GameId gameId, PlayerId playerId) {
+        var game=gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        var player=game.startAuction(playerId);
+
+        gameEventPublisher.startAuction(game, player);
     }
 }

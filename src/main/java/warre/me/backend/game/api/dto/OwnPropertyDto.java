@@ -1,8 +1,8 @@
 package warre.me.backend.game.api.dto;
 
-import warre.me.backend.chared.domain.board.Board;
-import warre.me.backend.chared.domain.board.property.Property;
-import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.shared.domain.board.Board;
+import warre.me.backend.shared.domain.board.property.Property;
+import warre.me.backend.shared.domain.dice.Dices;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.game.domain.property.OwnProperty;
 

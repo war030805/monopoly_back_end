@@ -1,7 +1,7 @@
 package warre.me.backend.lobby.domain.lobby;
 
 import lombok.Getter;
-import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.shared.domain.dice.Dices;
 import warre.me.backend.player.domain.PlayerId;
 import warre.me.backend.lobby.domain.LobbyPlayer;
 

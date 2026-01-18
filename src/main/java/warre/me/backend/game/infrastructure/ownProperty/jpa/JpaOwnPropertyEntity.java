@@ -1,7 +1,7 @@
 package warre.me.backend.game.infrastructure.ownProperty.jpa;
 
 import jakarta.persistence.*;
-import warre.me.backend.chared.domain.board.property.Property;
+import warre.me.backend.shared.domain.board.property.Property;
 import warre.me.backend.game.domain.property.OwnProperty;
 import warre.me.backend.game.domain.property.OwnPropertyId;
 

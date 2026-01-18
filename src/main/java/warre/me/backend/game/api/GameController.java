@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import warre.me.backend.chared.domain.cards.cardTypes.CardSpecificType;
+import warre.me.backend.shared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.application.GameService;
 import warre.me.backend.game.domain.game.GameId;
@@ -124,6 +124,16 @@ public class GameController {
     ) {
         PlayerId playerId= PlayerId.fromToken(token);
         gameService.useSavedCard(new GameId(gameId), playerId, cardSpecificType);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/startAuction/{gameId}/{cardSpecificType}")
+    public ResponseEntity<Void> startAuction(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.startAuction(new GameId(gameId), playerId);
         return ResponseEntity.ok().build();
     }
 

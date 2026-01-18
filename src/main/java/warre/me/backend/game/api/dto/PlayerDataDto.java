@@ -1,9 +1,8 @@
 package warre.me.backend.game.api.dto;
 
-import warre.me.backend.card.api.dto.CardDto;
-import warre.me.backend.chared.domain.board.Board;
-import warre.me.backend.chared.domain.board.tile.TileType;
-import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.shared.domain.board.Board;
+import warre.me.backend.shared.domain.board.tile.TileType;
+import warre.me.backend.shared.domain.dice.Dices;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.gamePlayer.Action;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;

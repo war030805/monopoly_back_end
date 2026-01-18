@@ -1,14 +1,14 @@
 package warre.me.backend.game.domain.property;
 
 import lombok.Getter;
-import warre.me.backend.chared.domain.board.property.Property;
-import warre.me.backend.chared.domain.board.property.StreetType;
-import warre.me.backend.chared.domain.dice.Dices;
+import warre.me.backend.shared.domain.board.property.Property;
+import warre.me.backend.shared.domain.board.property.StreetType;
+import warre.me.backend.shared.domain.dice.Dices;
 
 import java.util.Optional;
 
-import static warre.me.backend.chared.domain.board.property.StreetType.STATION;
-import static warre.me.backend.chared.domain.board.property.StreetType.UTILITY;
+import static warre.me.backend.shared.domain.board.property.StreetType.STATION;
+import static warre.me.backend.shared.domain.board.property.StreetType.UTILITY;
 
 @Getter
 public class OwnProperty {

@@ -1,14 +1,12 @@
 package warre.me.backend.board.api;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import warre.me.backend.board.api.dto.TileDto;
 import warre.me.backend.board.application.BoardService;
-import warre.me.backend.chared.domain.board.tile.Tile;
+import warre.me.backend.shared.domain.board.tile.Tile;
 
 import java.util.List;
 
