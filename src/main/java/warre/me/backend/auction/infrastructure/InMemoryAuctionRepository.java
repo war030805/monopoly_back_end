@@ -8,6 +8,7 @@ import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.game.GameRepository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,6 +22,11 @@ public class InMemoryAuctionRepository implements AuctionRepository {
     @Override
     public void save(Auction auction) {
         store.put(auction.getGameId(), auction);
+    }
+
+    @Override
+    public List<Auction> findAllAuctions() {
+        return store.values().stream().toList();
     }
 
     @Override

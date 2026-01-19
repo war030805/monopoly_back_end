@@ -1,11 +1,11 @@
 package warre.me.backend.auction.domain;
 
 import lombok.Getter;
-import warre.me.backend.auction.api.dto.AuctionPlayerDto;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.player.domain.PlayerId;
+import warre.me.backend.shared.domain.NotFoundException;
 import warre.me.backend.shared.domain.board.Board;
 import warre.me.backend.shared.domain.board.property.Property;
 
@@ -30,9 +30,6 @@ public class Auction {
 
     @Getter
     private LocalDateTime lastBetTime;
-
-    @Getter
-    private boolean started=false;
 
     private final boolean done;
 
@@ -74,10 +71,45 @@ public class Auction {
             return Optional.empty();
         }
 
+        return Optional.of(getHighestBet());
+    }
 
+    public AuctionPlayer getHighestBet() {
         return getMembers().stream()
                 .sorted()
                 .filter(AuctionPlayer::isBetting)
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("did not find a member of auction that is betting"));
+    }
+
+    private void doneCheck() {
+        if (done) {
+            throw new AuctionException("cannot do actions when is done");
+        }
+    }
+
+    public void placeBet(PlayerId playerId, int bet) {
+        doneCheck();
+
+        var highestBet=getHighestBet().getBet();
+
+        int betSetting=bet+highestBet;
+
+        var player= getAuctionPLayer(playerId)
+                .orElseThrow(playerId::notFound);
+
+
+
+        player.betAmount(betSetting);
+
+        lastBetTime=LocalDateTime.now();
+    }
+
+    public void passBet(PlayerId playerId) {
+        doneCheck();
+        var player= getAuctionPLayer(playerId)
+                .orElseThrow(playerId::notFound);
+
+        player.passBet();
     }
 }

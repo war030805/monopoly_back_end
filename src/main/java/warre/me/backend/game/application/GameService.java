@@ -135,5 +135,7 @@ public class GameService implements FacadeGameService {
         var player=game.startAuction(playerId);
 
         gameEventPublisher.startAuction(game, player);
+
+        gameRepository.save(game);
     }
 }

@@ -9,6 +9,8 @@ import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.player.domain.PlayerId;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class AuctionService {
@@ -32,5 +34,28 @@ public class AuctionService {
         auction.isMember(playerId);
 
         return auction;
+    }
+
+    public void placeBet(GameId gameId, PlayerId playerId, int bet) {
+        Auction auction=auctionRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        auction.placeBet(playerId, bet);
+
+        auctionRepository.save(auction);
+    }
+
+    public void passBet(GameId gameId, PlayerId playerId) {
+        Auction auction=auctionRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        auction.passBet(playerId);
+
+        auctionRepository.save(auction);
+    }
+
+    public void checkTimerIsDone() {
+        auctionRepository.findAllAuctions()
+                .forEach();
     }
 }

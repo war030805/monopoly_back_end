@@ -127,7 +127,7 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/startAuction/{gameId}/{cardSpecificType}")
+    @PostMapping("/startAuction/{gameId}")
     public ResponseEntity<Void> startAuction(
             @PathVariable UUID gameId,
             @AuthenticationPrincipal Jwt token

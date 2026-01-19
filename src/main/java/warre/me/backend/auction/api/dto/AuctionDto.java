@@ -14,9 +14,9 @@ public record AuctionDto(
         Property property,
         UUID starter,
         LocalDateTime lastBetTime,
-        boolean started,
         int place,
-        AuctionPlayerDto winner
+        AuctionPlayerDto winner,
+        int maxBet
 ) {
     public static AuctionDto fromDomain(Auction auction) {
         return new AuctionDto(
@@ -27,11 +27,11 @@ public record AuctionDto(
                 auction.getProperty(),
                 auction.getStarter().id(),
                 auction.getLastBetTime(),
-                auction.isStarted(),
                 Board.getPlaceOfProperty(auction.getProperty()),
                 auction.getWinner()
                         .map(AuctionPlayerDto::fromDomain)
-                        .orElse(null)
+                        .orElse(null),
+                auction.getHighestBet().getBet()
         );
     }
 }
