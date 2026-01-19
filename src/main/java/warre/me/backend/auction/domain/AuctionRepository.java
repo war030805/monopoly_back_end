@@ -9,7 +9,13 @@ public interface AuctionRepository {
 
     Optional<Auction> findByGameId(GameId gameId);
 
-    void save(Auction auction);
+    boolean save(Auction auction);
 
-    List<Auction> findAllAuctions();
+    List<Auction> findAll();
+
+    List<Auction> findAllThatAreNotDone();
+
+    void saveAll(List<Auction> auctions);
+
+    void removeById(GameId gameId);
 }

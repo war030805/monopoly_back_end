@@ -20,13 +20,30 @@ public class InMemoryAuctionRepository implements AuctionRepository {
     private final Map<GameId, Auction> store = new ConcurrentHashMap<>();
 
     @Override
-    public void save(Auction auction) {
-        store.put(auction.getGameId(), auction);
+    public boolean save(Auction auction) {
+        return store.put(auction.getGameId(), auction)==null;
     }
 
     @Override
-    public List<Auction> findAllAuctions() {
+    public List<Auction> findAll() {
         return store.values().stream().toList();
+    }
+
+    @Override
+    public List<Auction> findAllThatAreNotDone() {
+        return findAll().parallelStream()
+                .filter(auction -> !auction.isDone())
+                .toList();
+    }
+
+    @Override
+    public void saveAll(List<Auction> auctions) {
+        auctions.forEach(this::save);
+    }
+
+    @Override
+    public void removeById(GameId gameId) {
+        store.remove(gameId);
     }
 
     @Override

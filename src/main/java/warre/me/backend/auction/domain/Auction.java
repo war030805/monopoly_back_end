@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 
 public class Auction {
+
+    private final static int SECONDS_WITHOUT_BETTING_TIME= 15;
     @Getter
     private final GameId gameId;
     private final Map<PlayerId, AuctionPlayer> auctionPlayers;
@@ -31,7 +33,8 @@ public class Auction {
     @Getter
     private LocalDateTime lastBetTime;
 
-    private final boolean done;
+    @Getter
+    private boolean done;
 
     public Auction(GameId gameId, Map<PlayerId,AuctionPlayer> auctionPlayers, Property property, PlayerId starter) {
         this.gameId = gameId;
@@ -111,5 +114,16 @@ public class Auction {
                 .orElseThrow(playerId::notFound);
 
         player.passBet();
+    }
+
+    public void checkHasToEnd() {
+        doneCheck();
+
+        var timerIsUp=LocalDateTime.now().minusSeconds(SECONDS_WITHOUT_BETTING_TIME)
+                .isBefore(lastBetTime);
+
+        if (timerIsUp) {
+            done=true;
+        }
     }
 }
