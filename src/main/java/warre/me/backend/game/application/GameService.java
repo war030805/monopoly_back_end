@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import warre.me.backend.game.application.eventPublicher.GameEventPublisher;
 import warre.me.backend.shared.application.FacadeGameService;
+import warre.me.backend.shared.domain.board.property.Property;
 import warre.me.backend.shared.domain.cards.cardTypes.CardSpecificType;
 import warre.me.backend.game.api.dto.GameDataDto;
 import warre.me.backend.game.domain.game.Game;
@@ -137,5 +138,12 @@ public class GameService implements FacadeGameService {
         gameEventPublisher.startAuction(game, player);
 
         gameRepository.save(game);
+    }
+
+    public void endAuction(GameId gameId, int priceToPay, PlayerId winner, Property property) {
+        var game=gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.endAuction(priceToPay, winner, property);
     }
 }

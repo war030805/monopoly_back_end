@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import warre.me.backend.auction.api.dto.AuctionDto;
 import warre.me.backend.auction.api.dto.BetDto;
 import warre.me.backend.auction.application.AuctionService;
-import warre.me.backend.auction.domain.Auction;
+import warre.me.backend.auction.domain.auction.Auction;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.player.domain.PlayerId;
 
@@ -51,6 +51,16 @@ public class AuctionController {
             @AuthenticationPrincipal Jwt token
     ) {
         auctionService.passBet(new GameId(gameId), PlayerId.fromToken(token));
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/closeAuction/{gameId}")
+    private ResponseEntity<Void> closeAuction(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        auctionService.closeAuction(new GameId(gameId), PlayerId.fromToken(token));
 
         return ResponseEntity.ok().build();
     }

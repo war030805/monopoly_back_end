@@ -1,6 +1,6 @@
 package warre.me.backend.auction.api.dto;
 
-import warre.me.backend.auction.domain.Auction;
+import warre.me.backend.auction.domain.auction.Auction;
 import warre.me.backend.shared.domain.board.Board;
 import warre.me.backend.shared.domain.board.property.Property;
 

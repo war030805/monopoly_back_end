@@ -1,7 +1,7 @@
 package warre.me.backend.game.domain.game;
 
 import lombok.Getter;
-import warre.me.backend.auction.domain.AuctionException;
+import warre.me.backend.auction.domain.auction.AuctionException;
 import warre.me.backend.shared.domain.NotFoundException;
 import warre.me.backend.shared.domain.board.property.Property;
 import warre.me.backend.shared.domain.cards.Card;
@@ -109,7 +109,7 @@ public class Game {
     public void buyProperty(PlayerId playerId) {
         var player= getCurrentPlayerAndCheckIsPlayer(playerId);
 
-        var ownsProperty=ownsProperty(player);
+        var ownsProperty=ownsProperty(getPropertyFromPlace(player.getPlace()));
 
         if (ownsProperty) {
             throw new BuyException("you cannot buy property that is owned");
@@ -131,9 +131,9 @@ public class Game {
 
     }
 
-    private boolean ownsProperty(GamePlayer player) {
+    private boolean ownsProperty(Property property) {
         return getPlayersNotBankrupt().stream()
-                .anyMatch(otherPlayer -> otherPlayer.ownsProperty(getPropertyFromPlace(player.getPlace())));
+                .anyMatch(otherPlayer -> otherPlayer.ownsProperty(property));
     }
 
     private GamePlayer whoOwnsProperty(GamePlayer gamePlayer) {
@@ -242,7 +242,7 @@ public class Game {
     public GamePlayer startAuction(PlayerId playerId) {
         var player= getCurrentPlayerAndCheckIsPlayer(playerId);
 
-        var ownsProperty=ownsProperty(player);
+        var ownsProperty=ownsProperty(getPropertyFromPlace(player.getPlace()));
 
         if (ownsProperty) {
             throw new AuctionException("you cannot auction a property that is owned");
@@ -251,5 +251,16 @@ public class Game {
         player.startAuction();
 
         return player;
+    }
+
+    public void endAuction(int priceToPay, PlayerId winnerId, Property property) {
+        var winner= getPlayerById(winnerId);
+
+        var ownsProperty=ownsProperty(property);
+        if (ownsProperty) {
+            throw new AuctionException("you cannot buy property that is owned");
+        }
+
+        winner.payPriceForPropertyAuction(priceToPay, property);
     }
 }

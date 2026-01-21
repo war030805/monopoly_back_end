@@ -1,6 +1,7 @@
-package warre.me.backend.auction.domain;
+package warre.me.backend.auction.domain.auction;
 
 import lombok.Getter;
+import warre.me.backend.auction.domain.AuctionPlayer;
 import warre.me.backend.game.domain.game.Game;
 import warre.me.backend.game.domain.game.GameId;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 
 
 public class Auction {
+
+    @Getter
+    private final AuctionId auctionId;
 
     private final static int SECONDS_WITHOUT_BETTING_TIME= 15;
     @Getter

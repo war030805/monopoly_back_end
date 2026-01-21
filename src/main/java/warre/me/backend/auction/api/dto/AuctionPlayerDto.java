@@ -9,7 +9,8 @@ public record AuctionPlayerDto(
         int money,
         int bet,
         boolean betting,
-        boolean isBankrupt
+        boolean isBankrupt,
+        String color
 ) {
 
     public static AuctionPlayerDto fromDomain(AuctionPlayer auctionPlayer) {
@@ -18,7 +19,8 @@ public record AuctionPlayerDto(
                 auctionPlayer.getMoney(),
                 auctionPlayer.getBet(),
                 auctionPlayer.isBetting(),
-                auctionPlayer.isBankrupt()
+                auctionPlayer.isBankrupt(),
+                auctionPlayer.getColor()
         );
     }
 }

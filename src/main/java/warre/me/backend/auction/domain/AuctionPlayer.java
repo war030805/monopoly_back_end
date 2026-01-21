@@ -1,6 +1,7 @@
 package warre.me.backend.auction.domain;
 
 import lombok.Getter;
+import warre.me.backend.auction.domain.auction.AuctionException;
 import warre.me.backend.game.domain.game.MoneyException;
 import warre.me.backend.game.domain.gamePlayer.GamePlayer;
 import warre.me.backend.player.domain.PlayerId;
@@ -15,11 +16,14 @@ public class AuctionPlayer implements Comparable<AuctionPlayer>{
     private boolean betting;
     private final boolean isBankrupt;
 
-    public AuctionPlayer(PlayerId playerId, int money, boolean betting, boolean isBankrupt) {
+    private final String color;
+
+    public AuctionPlayer(PlayerId playerId, int money, boolean betting, boolean isBankrupt, String color) {
         this.playerId = playerId;
         this.money = money;
         this.betting=betting;
         this.isBankrupt=isBankrupt;
+        this.color = color;
     }
 
     public static AuctionPlayer makePLayer(GamePlayer gamePlayer) {
@@ -27,7 +31,8 @@ public class AuctionPlayer implements Comparable<AuctionPlayer>{
                 gamePlayer.getPlayerId(),
                 gamePlayer.getMoney(),
                 !gamePlayer.isBankrupt(),
-                gamePlayer.isBankrupt()
+                gamePlayer.isBankrupt(),
+                gamePlayer.getColor()
         );
     }
 

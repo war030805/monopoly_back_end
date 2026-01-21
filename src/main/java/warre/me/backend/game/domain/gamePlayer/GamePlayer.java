@@ -359,4 +359,12 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
         Board.getPropertyFromPlace(place);
     }
+
+    public void payPriceForPropertyAuction(int priceToPay, Property property) {
+        payMoney(priceToPay);
+
+        ownsProperties.put(property, new OwnProperty(
+                property
+        ));
+    }
 }

@@ -1,4 +1,4 @@
-package warre.me.backend.auction.domain;
+package warre.me.backend.auction.domain.auction;
 
 import warre.me.backend.game.domain.game.GameId;
 
@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AuctionRepository {
 
-    Optional<Auction> findByGameId(GameId gameId);
+    Optional<Auction> findByGameIdAndIsNotDone(GameId gameId);
 
     boolean save(Auction auction);
 
@@ -15,7 +15,5 @@ public interface AuctionRepository {
 
     List<Auction> findAllThatAreNotDone();
 
-    void saveAll(List<Auction> auctions);
-
-    void removeById(GameId gameId);
+    void saveAll(List<Auction> allNotDone);
 }
