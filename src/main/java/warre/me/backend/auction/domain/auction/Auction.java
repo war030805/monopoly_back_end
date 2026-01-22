@@ -74,7 +74,9 @@ public class Auction {
     }
 
     public List<AuctionPlayer> getMembers() {
-        return auctionPlayers.values().stream().toList();
+        return auctionPlayers.values().stream()
+                .sorted()
+                .toList();
     }
 
     public Optional<AuctionPlayer> getWinner() {
@@ -87,7 +89,6 @@ public class Auction {
 
     public AuctionPlayer getHighestBet() {
         return getMembers().stream()
-                .sorted()
                 .filter(AuctionPlayer::isBetting)
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("did not find a member of auction that is betting"));
@@ -127,10 +128,14 @@ public class Auction {
     public void checkHasToEnd() {
         doneCheck();
 
+        var oneBetting=getMembers().stream()
+                .filter(AuctionPlayer::isBetting)
+                .count()==1L;
+
         var timerIsUp=LocalDateTime.now().minusSeconds(SECONDS_WITHOUT_BETTING_TIME)
                 .isAfter(lastBetTime);
 
-        if (timerIsUp) {
+        if (timerIsUp || oneBetting) {
             done=true;
         }
     }

@@ -23,7 +23,9 @@ public record PlayerDataDto(
         List<CardPlayerInfoDto> ownedCards,
         CardPlayerInfoDto cardGot,
         boolean canPay,
-        List<Action> actionsDone
+        List<Action> actionsDone,
+        boolean inPrison,
+        int movesInPrison
 ) {
     public static PlayerDataDto fromDomain(GamePlayer gamePlayer, Dices dices, Game game) {
         return new PlayerDataDto(
@@ -45,7 +47,9 @@ public record PlayerDataDto(
                         .map(card -> CardPlayerInfoDto.fromDomain(card, gamePlayer, game))
                         .orElse(null),
                 gamePlayer.canPlayCurrentAction(game),
-                gamePlayer.getActionsDone()
+                gamePlayer.getActionsDone(),
+                gamePlayer.isInPrison(),
+                gamePlayer.getMovesInPrison()
         );
     }
 }

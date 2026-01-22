@@ -51,6 +51,12 @@ public class GamePlayer implements Comparable<GamePlayer> {
 
     private final List<Action> actionsDone;
 
+    @Getter
+    private boolean inPrison;
+
+    @Getter
+    private int movesInPrison;
+
     public GamePlayer(PlayerId playerId, int movePlace, String color) {
         this.playerId = playerId;
         this.movePlace = movePlace;
@@ -60,6 +66,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         this.color=color;
         ownedCards=new ArrayList<>();
         actionsDone=new LinkedList<>();
+        inPrison=false;
     }
 
     public GamePlayer(PlayerId playerId, Map<Property, OwnProperty> ownsProperties, int movePlace, int money, int place,
@@ -249,6 +256,12 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void goToPrison() {
+        bankruptCheck();
+        if (inPrison) {
+            throw new GameException("you are already in prison");
+        }
+        inPrison=true;
+        place= Board.getPlaceOfPrison();
     }
 
     public int getCountOfHouses() {

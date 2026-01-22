@@ -177,4 +177,8 @@ public abstract class Board {
 
         return Pair.of(distanceToTile, placeOfTile);
     }
+
+    public static int getPlaceOfPrison() {
+        return 10;
+    }
 }
