@@ -72,7 +72,7 @@ public class JpaGameEntity {
                 game.getCommunityChestCards().stream()
                         .map(Card::getCardSpecificType)
                         .toList(),
-                game.getCurrentPlayer().id(),
+                game.getCurrentPlayerId().id(),
                 game.getDices()
         );
     }

@@ -41,8 +41,14 @@ public class InMemoryAuctionRepository implements AuctionRepository {
     }
 
     @Override
-    public Optional<Auction> findByGameIdAndIsNotDone(GameId gameId) {
-        return findAllThatAreNotDone().stream()
+    public Optional<Auction> findById(AuctionId auctionId) {
+        return Optional.ofNullable(store.get(auctionId));
+    }
+
+    @Override
+    public Optional<Auction> findByGameIdAndIsNotClosed(GameId gameId) {
+        return findAll().stream()
+                .filter(auction -> !auction.isClosed())
                 .filter(auction -> auction.getGameId().equals(gameId))
                 .findAny();
     }

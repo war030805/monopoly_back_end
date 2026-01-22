@@ -145,5 +145,7 @@ public class GameService implements FacadeGameService {
                 .orElseThrow(gameId::notFound);
 
         game.endAuction(priceToPay, winner, property);
+
+        gameRepository.save(game);
     }
 }

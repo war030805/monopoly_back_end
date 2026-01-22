@@ -2,6 +2,7 @@ package warre.me.backend.auction.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import warre.me.backend.auction.application.eventPublicher.AuctionEventPublisher;
 import warre.me.backend.auction.domain.auction.Auction;
 import warre.me.backend.auction.domain.auction.AuctionException;
 import warre.me.backend.auction.domain.auction.AuctionRepository;
@@ -14,9 +15,11 @@ import warre.me.backend.player.domain.PlayerId;
 @Transactional
 public class AuctionService {
     private final AuctionRepository auctionRepository;
+    private final AuctionEventPublisher eventPublisher;
 
-    public AuctionService(AuctionRepository auctionRepository) {
+    public AuctionService(AuctionRepository auctionRepository, AuctionEventPublisher eventPublisher) {
         this.auctionRepository = auctionRepository;
+        this.eventPublisher = eventPublisher;
     }
 
 
@@ -27,7 +30,7 @@ public class AuctionService {
     }
 
     public Auction getAuction(GameId gameId, PlayerId playerId) {
-        Auction auction = auctionRepository.findByGameIdAndIsNotDone(gameId)
+        Auction auction = auctionRepository.findByGameIdAndIsNotClosed(gameId)
                 .orElseThrow(gameId::notFound);
 
         auction.isMember(playerId);
@@ -36,7 +39,7 @@ public class AuctionService {
     }
 
     public void placeBet(GameId gameId, PlayerId playerId, int bet) {
-        Auction auction = auctionRepository.findByGameIdAndIsNotDone(gameId)
+        Auction auction = auctionRepository.findByGameIdAndIsNotClosed(gameId)
                 .orElseThrow(gameId::notFound);
 
         auction.placeBet(playerId, bet);
@@ -45,7 +48,7 @@ public class AuctionService {
     }
 
     public void passBet(GameId gameId, PlayerId playerId) {
-        Auction auction = auctionRepository.findByGameIdAndIsNotDone(gameId)
+        Auction auction = auctionRepository.findByGameIdAndIsNotClosed(gameId)
                 .orElseThrow(gameId::notFound);
 
         auction.passBet(playerId);
@@ -57,15 +60,25 @@ public class AuctionService {
         var allNotDone = auctionRepository.findAllThatAreNotDone();
 
         allNotDone.parallelStream()
+                        .forEach(Auction::resetTimerIfNotBet);
+
+        allNotDone.parallelStream()
                 .forEach(Auction::checkHasToEnd);
 
         auctionRepository.saveAll(allNotDone);
     }
 
     public void closeAuction(GameId gameId, PlayerId playerId) {
-        Auction auction = auctionRepository.findByGameIdAndIsNotDone(gameId)
+        Auction auction = auctionRepository.findByGameIdAndIsNotClosed(gameId)
                 .orElseThrow(gameId::notFound);
 
+        auction.getAuctionPLayer(playerId)
+                        .orElseThrow(() -> new AuctionException("player is not part of auction"));
 
+        auction.closeAuction();
+
+        eventPublisher.endAuction(auction);
+
+        auctionRepository.save(auction);
     }
 }

@@ -55,7 +55,7 @@ class GameTest {
             game.endMove(player1.getPlayerId());
 
             // Assert
-            assertEquals(player2.getPlayerId(), game.getCurrentPlayer());
+            assertEquals(player2.getPlayerId(), game.getCurrentPlayerId());
             assertEquals(Action.WAITING, player1.getAction());
         }
 
@@ -74,7 +74,7 @@ class GameTest {
             game.endMove(player4.getPlayerId());
 
             // Assert
-            assertEquals(player1.getPlayerId(), game.getCurrentPlayer());
+            assertEquals(player1.getPlayerId(), game.getCurrentPlayerId());
             assertEquals(Action.WAITING, player4.getAction());
         }
     }

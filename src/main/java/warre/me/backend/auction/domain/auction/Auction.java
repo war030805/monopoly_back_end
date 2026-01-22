@@ -40,7 +40,11 @@ public class Auction {
     @Getter
     private boolean done;
 
+    @Getter
+    private boolean closed;
+
     public Auction(GameId gameId, Map<PlayerId,AuctionPlayer> auctionPlayers, Property property, PlayerId starter) {
+        this.auctionId=AuctionId.random();
         this.gameId = gameId;
         this.auctionPlayers = auctionPlayers;
         this.property = property;
@@ -124,10 +128,23 @@ public class Auction {
         doneCheck();
 
         var timerIsUp=LocalDateTime.now().minusSeconds(SECONDS_WITHOUT_BETTING_TIME)
-                .isBefore(lastBetTime);
+                .isAfter(lastBetTime);
 
         if (timerIsUp) {
             done=true;
+        }
+    }
+
+    public void closeAuction() {
+        closed=true;
+    }
+
+    public void resetTimerIfNotBet() {
+        var noOneSetABet=getMembers().stream()
+                .anyMatch(auctionPlayer -> auctionPlayer.getBet()!=0);
+
+        if (noOneSetABet) {
+            lastBetTime=LocalDateTime.now();
         }
     }
 }

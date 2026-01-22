@@ -38,29 +38,29 @@ public class Game {
     private final LinkedList<Card> communityChestCards;
 
     @Getter
-    private PlayerId currentPlayer;
+    private PlayerId currentPlayerId;
 
     @Getter
     private Dices dices;
 
-    public Game(GameId gameId, LobbyId lobbyFromGame, Map<PlayerId, GamePlayer> players, PlayerId currentPlayer) {
+    public Game(GameId gameId, LobbyId lobbyFromGame, Map<PlayerId, GamePlayer> players, PlayerId currentPlayerId) {
         this.gameId = gameId;
         this.lobbyFromGame = lobbyFromGame;
         this.players = players;
-        this.currentPlayer = currentPlayer;
+        this.currentPlayerId = currentPlayerId;
         dices=Dices.trowDices();
         chanceCards= new LinkedList<>(ChanceCards.makeDeck());
         communityChestCards= new LinkedList<>(CommunityChestCards.makeDeck());
     }
 
     public Game(GameId gameId, LobbyId lobbyFromGame, Map<PlayerId, GamePlayer> players, List<Card> chanceCards,
-                List<Card> communityChestCards, PlayerId currentPlayer, Dices dices) {
+                List<Card> communityChestCards, PlayerId currentPlayerId, Dices dices) {
         this.gameId = gameId;
         this.lobbyFromGame = lobbyFromGame;
         this.players = players;
         this.chanceCards = new LinkedList<>(chanceCards);
         this.communityChestCards = new LinkedList<>(communityChestCards);
-        this.currentPlayer = currentPlayer;
+        this.currentPlayerId = currentPlayerId;
         this.dices = dices;
     }
 
@@ -82,7 +82,7 @@ public class Game {
 
 
     public void checkIsMover(PlayerId playerId) {
-        if (!playerId.equals(currentPlayer)) {
+        if (!playerId.equals(currentPlayerId)) {
             throw new GameException("player is not current player");
         }
     }
@@ -162,7 +162,7 @@ public class Game {
                 .orElse(playersSorted.get(0));
 
         currentPlayer.endMove();
-        this.currentPlayer=newCurrentPlayer.getPlayerId();
+        this.currentPlayerId =newCurrentPlayer.getPlayerId();
     }
 
     public void payTax(PlayerId playerId) {
@@ -252,9 +252,14 @@ public class Game {
 
         return player;
     }
+    public GamePlayer getCurrentPlayer() {
+        return getPlayerById(currentPlayerId);
+    }
 
     public void endAuction(int priceToPay, PlayerId winnerId, Property property) {
         var winner= getPlayerById(winnerId);
+        var currentPlayer= getCurrentPlayer();
+
 
         var ownsProperty=ownsProperty(property);
         if (ownsProperty) {
@@ -262,5 +267,6 @@ public class Game {
         }
 
         winner.payPriceForPropertyAuction(priceToPay, property);
+        currentPlayer.endAuction();
     }
 }

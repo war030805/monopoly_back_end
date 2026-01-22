@@ -332,7 +332,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
     public boolean canPlayCurrentAction(Game game) {
         return switch (action) {
             case PAY_RENT, WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD,
-                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY, AUCTION -> true;
+                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY, AUCTION, END_AUCTION -> true;
             case PULLED_CARD -> canPay(cardGot.getMoneyToPay(game, this));
         };
     }
@@ -361,10 +361,15 @@ public class GamePlayer implements Comparable<GamePlayer> {
     }
 
     public void payPriceForPropertyAuction(int priceToPay, Property property) {
+        bankruptCheck();
         payMoney(priceToPay);
 
         ownsProperties.put(property, new OwnProperty(
                 property
         ));
+    }
+
+    public void endAuction() {
+        setCurrentAction(Action.END_AUCTION);
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record AuctionDto(
+        UUID auctionId,
         UUID gameId,
         List<AuctionPlayerDto> auctionPlayers,
         Property property,
@@ -20,6 +21,7 @@ public record AuctionDto(
 ) {
     public static AuctionDto fromDomain(Auction auction) {
         return new AuctionDto(
+                auction.getAuctionId().id(),
                 auction.getGameId().id(),
                 auction.getMembers().stream()
                         .map(AuctionPlayerDto::fromDomain)

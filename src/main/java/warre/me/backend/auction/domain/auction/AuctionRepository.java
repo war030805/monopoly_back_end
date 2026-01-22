@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AuctionRepository {
 
-    Optional<Auction> findByGameIdAndIsNotDone(GameId gameId);
+    Optional<Auction> findByGameIdAndIsNotClosed(GameId gameId);
 
     boolean save(Auction auction);
 
@@ -16,4 +16,6 @@ public interface AuctionRepository {
     List<Auction> findAllThatAreNotDone();
 
     void saveAll(List<Auction> allNotDone);
+
+    Optional<Auction> findById(AuctionId auctionId);
 }
