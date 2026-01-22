@@ -12,7 +12,7 @@ public class AuctionScheduler {
     }
 
 
-    @Scheduled(fixedRate = 500 )
+    @Scheduled(fixedRate = 500)
     public void checkTimerIsDone() {
         auctionService.checkTimerIsDone();
     }

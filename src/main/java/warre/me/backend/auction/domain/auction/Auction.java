@@ -141,7 +141,7 @@ public class Auction {
 
     public void resetTimerIfNotBet() {
         var noOneSetABet=getMembers().stream()
-                .anyMatch(auctionPlayer -> auctionPlayer.getBet()!=0);
+                .allMatch(auctionPlayer -> auctionPlayer.getBet()==0);
 
         if (noOneSetABet) {
             lastBetTime=LocalDateTime.now();
