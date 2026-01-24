@@ -199,6 +199,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         switch (doAction) {
             case MOVING -> setCurrentAction(TROWING_DICES);
             case PROPERTY -> setCurrentAction(TROWING_DICES_FOR_PROPERTY);
+            case PRISON -> setCurrentAction(Action.TROWING_DICES_FOR_PRISON);
         }
 
     }
@@ -345,7 +346,8 @@ public class GamePlayer implements Comparable<GamePlayer> {
     public boolean canPlayCurrentAction(Game game) {
         return switch (action) {
             case PAY_RENT, WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD,
-                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY, AUCTION, END_AUCTION -> true;
+                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY, AUCTION, END_AUCTION,
+                 TROWING_DICES_FOR_PRISON-> true;
             case PULLED_CARD -> canPay(cardGot.getMoneyToPay(game, this));
         };
     }
