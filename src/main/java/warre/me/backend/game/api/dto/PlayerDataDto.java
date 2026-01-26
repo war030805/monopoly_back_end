@@ -46,7 +46,7 @@ public record PlayerDataDto(
                 gamePlayer.getCardGotOptional()
                         .map(card -> CardPlayerInfoDto.fromDomain(card, gamePlayer, game))
                         .orElse(null),
-                gamePlayer.canPlayCurrentAction(game),
+                gamePlayer.canPayCurrentAction(game),
                 gamePlayer.getActionsDone(),
                 gamePlayer.isInPrison(),
                 gamePlayer.getMovesInPrison()

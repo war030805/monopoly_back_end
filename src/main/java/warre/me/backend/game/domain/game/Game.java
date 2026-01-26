@@ -269,4 +269,10 @@ public class Game {
         winner.payPriceForPropertyAuction(priceToPay, property);
         currentPlayer.endAuction();
     }
+
+    public void goToPrison(PlayerId playerId) {
+        var player= getCurrentPlayerAndCheckIsPlayer(playerId);
+
+        player.goToPrison();
+    }
 }

@@ -263,6 +263,7 @@ public class GamePlayer implements Comparable<GamePlayer> {
         }
         inPrison=true;
         place= Board.getPlaceOfPrison();
+        setCurrentAction(WENT_TO_PRISON);
     }
 
     public int getCountOfHouses() {
@@ -343,13 +344,11 @@ public class GamePlayer implements Comparable<GamePlayer> {
         return cardToUse;
     }
 
-    public boolean canPlayCurrentAction(Game game) {
-        return switch (action) {
-            case PAY_RENT, WAITING, TROWING_DICES, MOVED, BUY_PROPERTY, PAYING_TAXES, USED_CARD, SAVED_CARD,
-                 USED_SAVED_CARD, MOVED_AFTER_CARD, TROWING_DICES_FOR_PROPERTY, AUCTION, END_AUCTION,
-                 TROWING_DICES_FOR_PRISON-> true;
-            case PULLED_CARD -> canPay(cardGot.getMoneyToPay(game, this));
-        };
+    public boolean canPayCurrentAction(Game game) {
+        if (action==PULLED_CARD)
+            return canPay(cardGot.getMoneyToPay(game, this));
+
+        return true;
     }
 
     private boolean canPay(int moneyToPay) {

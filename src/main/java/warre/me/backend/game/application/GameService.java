@@ -148,4 +148,13 @@ public class GameService implements FacadeGameService {
 
         gameRepository.save(game);
     }
+
+    public void goToPrison(GameId gameId, PlayerId playerId) {
+        var game= gameRepository.findByGameId(gameId)
+                .orElseThrow(gameId::notFound);
+
+        game.goToPrison(playerId);
+
+        gameRepository.save(game);
+    }
 }

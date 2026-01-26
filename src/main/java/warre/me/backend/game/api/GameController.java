@@ -137,6 +137,16 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/goToPrison/{gameId}")
+    public ResponseEntity<Void> goToPrison(
+            @PathVariable UUID gameId,
+            @AuthenticationPrincipal Jwt token
+    ) {
+        PlayerId playerId= PlayerId.fromToken(token);
+        gameService.goToPrison(new GameId(gameId), playerId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{gameId}")
     public ResponseEntity<GameDataDto> getGameData(
             @PathVariable UUID gameId,
